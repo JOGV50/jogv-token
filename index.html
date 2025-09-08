@@ -4,80 +4,214 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>JOGV • Journey of Good Vibes</title>
+  <meta name="description" content="JOGV is a community‑powered meme coin spreading positivity. Built on Base.">
+  <meta property="og:title" content="JOGV — Journey of Good Vibes" />
+  <meta property="og:description" content="Community‑powered meme coin spreading positivity. Built on Base." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://example.com/og-image.png" />
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b0d14;
-      color: #f3f4f6;
-      padding: 40px;
-      text-align: center;
+    :root{
+      --bg:#0b0d14; --card:#121521; --muted:#9aa3b2; --text:#f3f4f6;
+      --purple:#9B5DE5; --teal:#00F5D4; --coral:#FF6B6B; --yellow:#FFD93D;
     }
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-    }
-    p {
-      color: #9aa3b2;
-      margin: 0 0 20px;
-    }
-    .logo {
-      width: 200px;
-      margin: 0 auto 20px;
-    }
-    .buttons a {
-      display: inline-block;
-      margin: 10px;
-      padding: 12px 20px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-      color: #0b0d14;
-      background: linear-gradient(90deg, #9B5DE5, #00F5D4);
-    }
-    .contract {
-      margin-top: 20px;
-      font-family: monospace;
-      background: #161a2a;
-      padding: 10px 14px;
-      border-radius: 10px;
-      display: inline-block;
-    }
-    footer {
-      margin-top: 40px;
-      font-size: 0.8rem;
-      opacity: 0.7;
-    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;background:
+      radial-gradient(1200px 800px at 10% -10%, rgba(155,93,229,.15), transparent 60%),
+      radial-gradient(900px 600px at 110% 0%, rgba(0,245,212,.12), transparent 60%),var(--bg);color:var(--text)}
+    a{color:var(--teal)}
+    .container{max-width:1120px;margin:0 auto;padding:24px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;text-decoration:none;border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--purple),var(--teal));color:#0b0d14;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+    .btn.alt{background:#161a2a;color:#e5e7eb;border:1px solid rgba(255,255,255,.1)}
+    .btn.small{padding:8px 12px;border-radius:10px;font-weight:700}
+    .muted{color:var(--muted)}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:24px}
+    .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    /* NAV */
+    .nav{position:sticky;top:0;z-index:20;background:rgba(11,13,20,.7);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .nav a{color:#e5e7eb;text-decoration:none;font-weight:700;font-size:14.5px;opacity:.9}
+    .nav .links{display:flex;gap:16px;flex-wrap:wrap}
+    .logo-wrap{display:flex;align-items:center;gap:12px}
+    .logo-svg{width:52px;height:52px}
+    /* HERO */
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+    .title{font-size:clamp(28px,4.4vw,48px);line-height:1.05;margin:0 0 8px;font-weight:900}
+    .subtitle{margin:0 0 14px;color:var(--muted)}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 4px}
+    .badge{display:inline-flex;align-items:center;gap:8px;background:#0e1220;border:1px solid rgba(255,255,255,.08);color:#b8c0cc;padding:8px 12px;border-radius:999px;font-size:13px}
+    .badge .dot{width:8px;height:8px;border-radius:999px;background:var(--teal)}
+    .copy{display:flex;gap:10px;align-items:center;background:#0e1220;border:1px dashed rgba(255,255,255,.2);padding:10px 12px;border-radius:12px}
+    .section{scroll-margin-top:90px;margin-top:26px}
+    .section h2{margin:0 0 10px;font-size:clamp(22px,3.2vw,30px)}
+    .faq dt{font-weight:800;margin-top:10px}
+    .faq dd{margin:6px 0 14px;color:var(--muted)}
+    footer{opacity:.8;font-size:13px;text-align:center;padding:36px 0}
   </style>
 </head>
 <body>
-  <!-- Inline SVG Logo (Logo 2) -->
-  <div class="logo">
-    <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
-      <rect width="100%" height="100%" fill="none"/>
-      <text x="10" y="130" font-size="100" font-family="Arial Black, sans-serif" fill="#FF6B6B">J</text>
-      <text x="80" y="130" font-size="100" font-family="Arial Black, sans-serif" fill="#FFD93D">O</text>
-      <path d="M110 110 Q150 80 190 110" stroke="#FFD93D" stroke-width="12" fill="none"/>
-      <text x="170" y="130" font-size="100" font-family="Arial Black, sans-serif" fill="#00F5D4">G</text>
-      <text x="240" y="130" font-size="100" font-family="Arial Black, sans-serif" fill="#9B5DE5">V</text>
-    </svg>
-  </div>
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="logo-wrap">
+        <!-- Inline SVG logo (block JOGV with wave) -->
+        <svg class="logo-svg" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#FF6B6B"/>
+              <stop offset="40%" stop-color="#FFD93D"/>
+              <stop offset="70%" stop-color="#00F5D4"/>
+              <stop offset="100%" stop-color="#9B5DE5"/>
+            </linearGradient>
+          </defs>
+          <path d="M30 150 v-70 h16 v58 q0 20 18 20 8 0 14-5 v-17 h-12 v-14 h28 v43 q-14 13-32 13-32 0-32-28z" fill="#FF6B6B"/>
+          <circle cx="118" cy="94" r="30" fill="#FFD93D"/>
+          <path d="M78 150 q36 0 54-22 10-12 28-12 26 0 44 10" stroke="#FFD93D" stroke-width="12" fill="none" stroke-linecap="round"/>
+          <path d="M168 94 a30 30 0 1 0 .1 0z" fill="#00F5D4"/>
+          <rect x="210" y="72" width="30" height="76" rx="16" fill="#9B5DE5"/>
+        </svg>
+        <strong>JOGV</strong>
+      </div>
+      <div class="links">
+        <a href="#token">Token</a>
+        <a href="#how">How to Buy</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#faq">FAQ</a>
+        <a href="#community">Community</a>
+      </div>
+    </div>
+  </nav>
 
-  <h1>JOGV — Journey of Good Vibes</h1>
-  <p>Community-powered meme coin spreading positivity.<br>Built on <strong>Base</strong>.</p>
-  
-  <div class="buttons">
-    <a href="#">Buy JOGV</a>
-    <a href="#">View Chart</a>
-    <a href="#">Join Community</a>
-  </div>
-  
-  <div class="contract">
-    Contract: 0xYOUR_CONTRACT_ADDRESS_HERE
-  </div>
+  <main class="container">
+    <!-- HERO -->
+    <section class="card section" id="hero">
+      <div class="hero">
+        <div>
+          <h1 class="title">JOGV — Journey of Good Vibes</h1>
+          <p class="subtitle">Community‑powered meme coin spreading positivity. Built on <strong>Base</strong>.</p>
+          <div class="badges">
+            <span class="badge"><span class="dot"></span>BASE Network</span>
+            <span class="badge">Ticker: <strong>JOGV</strong></span>
+            <span class="badge">Max Supply: <span class="mono">TBD</span></span>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px">
+            <a class="btn" href="#buy">Buy JOGV</a>
+            <a class="btn alt" href="#chart">View Chart</a>
+            <a class="btn alt" href="#community">Join Community</a>
+          </div>
+          <div style="height:12px"></div>
+          <div class="copy">
+            <div>
+              <div class="muted" style="font-size:12px;letter-spacing:.06em;text-transform:uppercase">Contract Address</div>
+              <div class="mono" id="addr" style="font-size:14.5px">0xYOUR_CONTRACT_ADDRESS_HERE</div>
+            </div>
+            <button class="btn small" id="copyBtn">Copy</button>
+          </div>
+        </div>
+        <div class="card" style="text-align:left">
+          <h3 style="margin:0 0 8px">What is JOGV?</h3>
+          <p class="muted">JOGV is the token at the heart of the <em>Journey of Good Vibes</em> movement — a community built around positivity, playful meme culture, and real utility.</p>
+          <ul class="muted">
+            <li>Fun, friendly branding designed for youth‑driven adoption.</li>
+            <li>Transparent tokenomics with future hooks for staking/rewards.</li>
+            <li>Roadmap focused on community, merch, and a light game prototype.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-  <footer>
-    © 2025 SaaR Media Group LLC · Not financial advice. Community project.
-  </footer>
+    <!-- TOKEN -->
+    <section class="section" id="token">
+      <div class="grid">
+        <div class="card">
+          <h2>Tokenomics (V1)</h2>
+          <ul class="muted">
+            <li>Total Supply: <span class="mono">TBD</span></li>
+            <li>Tax: <span class="mono">2% dev wallet</span> (subject to update)</li>
+            <li>LP: <span class="mono">TBD</span></li>
+            <li>Future: staking & rewards hooks</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Links</h2>
+          <ul class="muted">
+            <li><a href="#etherscan">BaseScan / Etherscan</a> — TBD</li>
+            <li><a href="#dextools">DexTools / GeckoTerminal</a> — TBD</li>
+            <li><a href="#whitepaper">Litepaper (PDF)</a> — TBD</li>
+          </ul>
+          <div style="margin-top:8px">
+            <a class="btn" href="#buy">Buy JOGV</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW TO BUY -->
+    <section class="card section" id="how">
+      <h2>How to Buy on Base</h2>
+      <ol class="muted" style="margin-left:18px">
+        <li>Install a wallet (e.g., Coinbase Wallet or MetaMask).</li>
+        <li>Bridge ETH to <strong>Base</strong> (use the official Base bridge).</li>
+        <li>Open the DEX link (we'll add it here) and paste the contract address.</li>
+        <li>Set slippage if needed, confirm swap, and you're in ✨</li>
+      </ol>
+      <div style="margin-top:10px"><a class="btn" href="#buy">Open DEX</a></div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section class="card section" id="roadmap">
+      <h2>Roadmap</h2>
+      <div class="grid">
+        <div class="card"><strong>Phase 1</strong><p class="muted">Token launch on Base • Site + socials • Community bootstrap</p></div>
+        <div class="card"><strong>Phase 2</strong><p class="muted">Liquidity • Charts • Listings • Meme + giveaway campaigns</p></div>
+        <div class="card"><strong>Phase 3</strong><p class="muted">Merch drops • Partnerships • Light game prototype</p></div>
+        <div class="card"><strong>Phase 4</strong><p class="muted">Ecosystem growth • Content & books • Community grants</p></div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="card section" id="faq">
+      <h2>FAQ</h2>
+      <dl class="faq">
+        <dt>What’s the purpose of JOGV?</dt>
+        <dd>To spread good vibes through a fun, youth‑friendly brand while building a transparent, community‑first token.</dd>
+        <dt>Is this financial advice?</dt>
+        <dd>No. JOGV is a community project — please DYOR.</dd>
+        <dt>Where can I get updates?</dt>
+        <dd>Follow our socials below and join the community chat.</dd>
+      </dl>
+    </section>
+
+    <!-- COMMUNITY -->
+    <section class="card section" id="community">
+      <h2>Join the Community</h2>
+      <p class="muted">We’re building a friendly space where positivity wins. Come hang out, share memes, and help shape the future of JOGV.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+        <a class="btn" href="#telegram">Telegram</a>
+        <a class="btn alt" href="#discord">Discord</a>
+        <a class="btn alt" href="#twitter">X / Twitter</a>
+        <a class="btn alt" href="#youtube">YouTube</a>
+      </div>
+    </section>
+
+    <footer>
+      © 2025 SaaR Media Group LLC · Not financial advice. Community project.
+    </footer>
+  </main>
+
+  <script>
+    // Smooth scroll for anchor links (nice when embedded too)
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',e=>{const id=a.getAttribute('href'); if(id.length>1){e.preventDefault(); document.querySelector(id)?.scrollIntoView({behavior:'smooth'});}});
+    });
+    // Copy contract address
+    const btn = document.getElementById('copyBtn');
+    btn?.addEventListener('click', async () => {
+      const text = document.getElementById('addr').textContent.trim();
+      try { await navigator.clipboard.writeText(text); btn.textContent = 'Copied!'; setTimeout(()=>btn.textContent='Copy', 1200); } catch(e){ btn.textContent = 'Copy failed'; }
+    });
+  </script>
 </body>
 </html>
