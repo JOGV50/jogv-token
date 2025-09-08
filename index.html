@@ -29,12 +29,36 @@
     .card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:24px}
     .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
     /* NAV */
-    .nav{position:sticky;top:0;z-index:20;background:rgba(11,13,20,.7);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
-    .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .nav a{color:#e5e7eb;text-decoration:none;font-weight:700;font-size:14.5px;opacity:.9}
-    .nav .links{display:flex;gap:16px;flex-wrap:wrap}
-    .logo-wrap{display:flex;align-items:center;gap:12px}
-    .logo-svg{width:52px;height:52px}
+  .nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(11,13,20,.7);
+  backdrop-filter: saturate(140%) blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.nav .links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-left: auto; /* pushes nav links to right */
+}
+.nav a {
+  color: #e5e7eb;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14.5px;
+  opacity: .9;
+}
+.logo-svg {
+  width: 48px;
+  height: 48px;
+}
     /* HERO */
     .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
     @media (max-width:900px){.hero{grid-template-columns:1fr}}
@@ -54,20 +78,44 @@
 <body>
   <!-- NAVBAR -->
   <nav class="nav">
-    <div class="container nav-inner">
-      <div class="logo-wrap">
-  <svg class="logo-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <linearGradient id="jogvGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#FF6B6B"/>
-        <stop offset="33%" stop-color="#FFD93D"/>
-        <stop offset="66%" stop-color="#00F5D4"/>
-        <stop offset="100%" stop-color="#9B5DE5"/>
-      </linearGradient>
-    </defs>
-    <text x="0" y="115" font-size="100" font-family="Arial Black, sans-serif" fill="url(#jogvGradient)">JOGV</text>
-  </svg>
-</div>
+  <div class="container nav-inner">
+    <!-- Left: logo -->
+    <a href="#hero" class="brand" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <svg class="logo-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="jogvGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FF6B6B"/>
+            <stop offset="33%" stop-color="#FFD93D"/>
+            <stop offset="66%" stop-color="#00F5D4"/>
+            <stop offset="100%" stop-color="#9B5DE5"/>
+          </linearGradient>
+        </defs>
+        <text x="0" y="115" font-size="100" font-family="Arial Black, sans-serif" fill="url(#jogvGradient)">JOGV</text>
+      </svg>
+    </a>
+
+    <!-- Right: nav links -->
+    <div class="links">
+      <a href="#token">Token</a>
+      <a href="#how">How to Buy</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#faq">FAQ</a>
+      <a href="#community">Community</a>
+    </div>
+  </div>
+</nav>
+
+
+    <!-- Right: links -->
+    <div class="links">
+      <a href="#token">Token</a>
+      <a href="#how">How to Buy</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#faq">FAQ</a>
+      <a href="#community">Community</a>
+    </div>
+  </div>
+</nav>
         <!-- Inline SVG logo (block JOGV with wave) -->
         <svg class="logo-svg" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
