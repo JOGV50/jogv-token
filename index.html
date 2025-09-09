@@ -267,52 +267,58 @@
     const ENABLE_PAGELOAD_RAIN = true; // set false if you only want the Buy burst
     const stage = document.getElementById('coinStage');
 
-    function spawnCoin(opts={}){
-      const img = new Image();
-      img.src = COIN_SRC;
-      img.className = 'coin';
-      const w = Math.random()*26 + 42; // 42–68px
-      img.style.width = w+'px'; img.style.height = w+'px';
+   function spawnCoin(opts={}){
+  const img = new Image();
+  img.src = COIN_SRC;
+  img.className = 'coin';
 
-      const startX = Math.random()*window.innerWidth;
-      const drift = (Math.random()*160 - 80); // left/right drift
-      const dur = (opts.duration ?? (Math.random()*1.5 + 3.5)); // 3.5–5s
-      const delay = (opts.delay ?? Math.random()*0.8);
-      const scale = Math.random()*0.2 + 0.9;
+  // Bigger coins: random between 80–120px
+  const w = Math.random()*40 + 80; 
+  img.style.width = w+'px'; 
+  img.style.height = w+'px';
 
-      img.style.setProperty('--x', startX+'px');
-      img.style.setProperty('--xEnd', (startX+drift)+'px');
-      img.style.setProperty('--s', scale);
-      img.style.setProperty('--r0', (Math.random()*60-30)+'deg');
-      img.style.setProperty('--r1', (Math.random()*540+360)+'deg'); // 360–900deg
-      img.style.animationDuration = dur+'s, '+(dur*0.9)+'s';
-      img.style.animationDelay = delay+'s, '+delay+'s';
+  const startX = Math.random()*window.innerWidth;
+  const drift = (Math.random()*200 - 100); // wider side drift
+  const dur = (opts.duration ?? (Math.random()*2.5 + 5)); // 5–7.5s (slower fall)
+  const delay = (opts.delay ?? Math.random()*1.2);        // staggered starts
+  const scale = Math.random()*0.2 + 1.0;
 
-      stage.appendChild(img);
-      const total = (delay+dur+0.2)*1000;
-      setTimeout(()=> img.remove(), total);
-    }
+  img.style.setProperty('--x', startX+'px');
+  img.style.setProperty('--xEnd', (startX+drift)+'px');
+  img.style.setProperty('--s', scale);
+  img.style.setProperty('--r0', (Math.random()*60-30)+'deg');
+  img.style.setProperty('--r1', (Math.random()*540+360)+'deg');
+  img.style.animationDuration = dur+'s, '+(dur*0.9)+'s';
+  img.style.animationDelay = delay+'s, '+delay+'s';
 
-    function spawnToast(msg="+1 Good Vibe"){
-      const span = document.createElement('span');
-      span.textContent = msg;
-      span.style.position = 'fixed';
-      span.style.left = (Math.random()*70+15)+'%'; // 15%–85%
-      span.style.top = (Math.random()*15+70)+'%';  // 70%–85%
-      span.style.fontWeight = '900';
-      span.style.fontSize = '20px';
-      span.style.color = '#FFD93D';
-      span.style.textShadow = '0 2px 6px rgba(0,0,0,.45)';
-      span.style.opacity = '1';
-      span.style.transition = 'transform 1.8s ease-out, opacity 1.8s ease-out';
-      span.style.zIndex = 60;
-      document.body.appendChild(span);
-      requestAnimationFrame(()=>{
-        span.style.transform = 'translateY(-120px)';
-        span.style.opacity = '0';
-      });
-      setTimeout(()=> span.remove(), 1900);
-    }
+  stage.appendChild(img);
+  const total = (delay+dur+0.5)*1000; // extra buffer so they fully finish
+  setTimeout(()=> img.remove(), total);
+}
+
+   function spawnToast(msg="+1 Good Vibe"){
+  const span = document.createElement('span');
+  span.textContent = msg;
+  span.style.position = 'fixed';
+  span.style.left = (Math.random()*70+15)+'%'; // 15%–85%
+  span.style.top = (Math.random()*15+70)+'%';  // 70%–85%
+  span.style.fontWeight = '900';
+  span.style.fontSize = '22px';
+  span.style.color = '#FFD93D';
+  span.style.textShadow = '0 3px 8px rgba(0,0,0,.45)';
+  span.style.opacity = '1';
+  span.style.transition = 'transform 2.5s ease-out, opacity 2.5s ease-out';
+  span.style.zIndex = 60;
+  document.body.appendChild(span);
+
+  requestAnimationFrame(()=>{
+    span.style.transform = 'translateY(-160px)'; // floats higher
+    span.style.opacity = '0';
+  });
+
+  setTimeout(()=> span.remove(), 2700); // lingers longer
+}
+
 
     function coinRainBurst(count=24){
       for(let i=0;i<count;i++) spawnCoin({duration: Math.random()*1.2 + 2.6, delay: Math.random()*0.35});
