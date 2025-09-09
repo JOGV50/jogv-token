@@ -267,45 +267,27 @@
     const ENABLE_PAGELOAD_RAIN = true; // set false if you only want the Buy burst
     const stage = document.getElementById('coinStage');
 
-  function spawnCoin(opts={}){
-  const img = new Image();
-  img.src = COIN_SRC;
-  img.className = 'coin';
+ function spawnToast(msg="+1 Good Vibe"){
+  const span = document.createElement('span');
+  span.textContent = msg;
+  span.style.position = 'fixed';
+  span.style.left = (Math.random()*70+15)+'%'; // 15%–85%
+  span.style.top = (Math.random()*15+70)+'%';  // 70%–85%
+  span.style.fontWeight = '900';
+  span.style.fontSize = '22px';
+  span.style.color = '#FFD93D';
+  span.style.textShadow = '0 3px 8px rgba(0,0,0,.45)';
+  span.style.opacity = '1';
+  span.style.transition = 'transform 2.5s ease-out, opacity 2.5s ease-out';
+  span.style.zIndex = 60;
+  document.body.appendChild(span);
 
-  // Bigger coins: 80–120px
-  const w = Math.random()*40 + 80;
-  img.style.width = w+'px';
-  img.style.height = w+'px';
+  requestAnimationFrame(()=>{
+    span.style.transform = 'translateY(-160px)'; // floats higher
+    span.style.opacity = '0';
+  });
 
-  const startX = Math.random()*window.innerWidth;
-  const drift  = (Math.random()*200 - 100);
-  const dur    = (opts.duration ?? (Math.random()*2.5 + 5)); // 5–7.5s
-  const delay  = (opts.delay ?? Math.random()*1.2);
-  const scale  = Math.random()*0.2 + 1.0;
-
-  // ~40% of coins don't spin (clearer face)
-  const spinless = Math.random() < 0.4;
-
-  img.style.setProperty('--x', startX+'px');
-  img.style.setProperty('--xEnd', (startX+drift)+'px');
-  img.style.setProperty('--s', scale);
-  img.style.setProperty('--r0', (Math.random()*40-20)+'deg');
-  img.style.setProperty('--r1', (Math.random()*240+120)+'deg');
-
-  img.style.animationName = spinless ? 'coin-fall' : 'coin-fall, coin-spin';
-  img.style.animationDuration = spinless ? `${dur}s` : `${dur}s, ${dur*0.9}s`;
-  img.style.animationDelay    = spinless ? `${delay}s` : `${delay}s, ${delay}s`;
-  img.style.animationFillMode = 'forwards';
-
-  stage.appendChild(img);
-
-  // Clean up (or optionally pin a few)
-  const total = (delay+dur+0.5)*1000;
-  setTimeout(()=>{
-    // 12% chance to attempt pinning if we still need pins
-    if (maybePinCoin(img)) return;
-    img.remove();
-  }, total);
+  setTimeout(()=> span.remove(), 2700); // lingers longer
 }
 
   setTimeout(()=> span.remove(), 2700); // lingers longer
