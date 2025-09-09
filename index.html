@@ -8,7 +8,7 @@
   <meta property="og:title" content="JOGV — Journey of Good Vibes" />
   <meta property="og:description" content="Community-powered meme coin spreading positivity. Built on Base." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://example.com/og-image.png" />
+  <meta property="og:image" content="https://rustlyreynolds-jpg.github.io/jogv-token/jogv-coin.png" />
 
   <style>
     :root{
@@ -46,7 +46,6 @@
     .nav .links{display:flex;gap:16px;flex-wrap:wrap;margin-left:auto}
     .nav a{color:#e5e7eb;text-decoration:none;font-weight:700;font-size:14.5px;opacity:.9}
     .logo-svg{width:120px;height:auto;vertical-align:middle}
-    .brand-text{font-size:22px;font-weight:900;color:#e5e7eb}
 
     /* HERO */
     .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
@@ -62,30 +61,57 @@
     .faq dt{font-weight:800;margin-top:10px}
     .faq dd{margin:6px 0 14px;color:var(--muted)}
     footer{opacity:.8;font-size:13px;text-align:center;padding:36px 0}
+
+    /* ---------- COIN RAIN ---------- */
+    .coin-rain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 50;
+    }
+    .coin {
+      position: absolute;
+      top: -120px;
+      width: 64px; height: 64px;
+      will-change: transform, opacity;
+      user-select: none;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
+      animation-name: coin-fall, coin-spin;
+      animation-timing-function: linear, ease-in-out;
+      animation-fill-mode: forwards;
+    }
+    @keyframes coin-fall {
+      0% { transform: translate3d(var(--x,0),-120px,0) rotate(var(--r0,0deg)) scale(var(--s,1)); opacity:0 }
+      10% { opacity:1 }
+      100% { transform: translate3d(var(--xEnd,0), 105vh,0) rotate(var(--r1,360deg)) scale(var(--s,1)); opacity:0 }
+    }
+    @keyframes coin-spin {
+      0% { transform: translate3d(var(--x,0),-120px,0) rotateY(0deg) }
+      100% { transform: translate3d(var(--xEnd,0), 105vh,0) rotateY(540deg) }
+    }
+
+    /* Good Vibe toast (no extra CSS class—styled inline) */
   </style>
 </head>
 
 <body>
-  <!-- NAVBAR (single, final) -->
+  <!-- NAVBAR -->
   <nav class="nav">
     <div class="container nav-inner">
-      <!-- Left: logo -->
-     <a href="#hero" class="brand" style="display:flex;align-items:center;gap:12px;text-decoration:none">
-  <svg class="logo-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <linearGradient id="jogvGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#FF6B6B"/>
-        <stop offset="33%" stop-color="#FFD93D"/>
-        <stop offset="66%" stop-color="#00F5D4"/>
-        <stop offset="100%" stop-color="#9B5DE5"/>
-      </linearGradient>
-    </defs>
-    <text x="0" y="115" font-size="100" font-family="Arial Black, sans-serif" fill="url(#jogvGradient)">JOGV</text>
-  </svg>
-</a>
-
-
-      <!-- Right: links -->
+      <a href="#hero" class="brand" style="display:flex;align-items:center;gap:12px;text-decoration:none">
+        <svg class="logo-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="jogvGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#FF6B6B"/>
+              <stop offset="33%" stop-color="#FFD93D"/>
+              <stop offset="66%" stop-color="#00F5D4"/>
+              <stop offset="100%" stop-color="#9B5DE5"/>
+            </linearGradient>
+          </defs>
+          <text x="0" y="115" font-size="100" font-family="Arial Black, sans-serif" fill="url(#jogvGradient)">JOGV</text>
+        </svg>
+      </a>
       <div class="links">
         <a href="#token">Token</a>
         <a href="#how">How to Buy</a>
@@ -110,7 +136,7 @@
             <span class="badge">Max Supply: <span class="mono">TBD</span></span>
           </div>
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px">
-            <a class="btn" href="#buy">Buy JOGV</a>
+            <a class="btn" id="buyBtn" href="#buy" target="_blank" rel="noopener">Buy JOGV</a>
             <a class="btn alt" href="#chart">View Chart</a>
             <a class="btn alt" href="#community">Join Community</a>
           </div>
@@ -156,7 +182,7 @@
             <li><a href="#whitepaper">Litepaper (PDF)</a> — TBD</li>
           </ul>
           <div style="margin-top:8px">
-            <a class="btn" href="#buy">Buy JOGV</a>
+            <a class="btn" href="#buy" target="_blank" rel="noopener">Buy JOGV</a>
           </div>
         </div>
       </div>
@@ -171,7 +197,7 @@
         <li>Open the DEX link (we'll add it here) and paste the contract address.</li>
         <li>Set slippage if needed, confirm swap, and you're in ✨</li>
       </ol>
-      <div style="margin-top:10px"><a class="btn" href="#buy">Open DEX</a></div>
+      <div style="margin-top:10px"><a class="btn" href="#buy" target="_blank" rel="noopener">Open DEX</a></div>
     </section>
 
     <!-- ROADMAP -->
@@ -215,6 +241,9 @@
     </footer>
   </main>
 
+  <!-- coin rain container -->
+  <div class="coin-rain" id="coinStage" aria-hidden="true"></div>
+
   <script>
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
@@ -231,6 +260,77 @@
         await navigator.clipboard.writeText(text);
         btn.textContent='Copied!'; setTimeout(()=>btn.textContent='Copy',1200);
       }catch(e){ btn.textContent='Copy failed'; }
+    });
+
+    /* ---------- COIN RAIN + GOOD VIBE TOAST ---------- */
+    const COIN_SRC = 'jogv-coin.png'; // your PNG in repo root
+    const ENABLE_PAGELOAD_RAIN = true; // set false if you only want the Buy burst
+    const stage = document.getElementById('coinStage');
+
+    function spawnCoin(opts={}){
+      const img = new Image();
+      img.src = COIN_SRC;
+      img.className = 'coin';
+      const w = Math.random()*26 + 42; // 42–68px
+      img.style.width = w+'px'; img.style.height = w+'px';
+
+      const startX = Math.random()*window.innerWidth;
+      const drift = (Math.random()*160 - 80); // left/right drift
+      const dur = (opts.duration ?? (Math.random()*1.5 + 3.5)); // 3.5–5s
+      const delay = (opts.delay ?? Math.random()*0.8);
+      const scale = Math.random()*0.2 + 0.9;
+
+      img.style.setProperty('--x', startX+'px');
+      img.style.setProperty('--xEnd', (startX+drift)+'px');
+      img.style.setProperty('--s', scale);
+      img.style.setProperty('--r0', (Math.random()*60-30)+'deg');
+      img.style.setProperty('--r1', (Math.random()*540+360)+'deg'); // 360–900deg
+      img.style.animationDuration = dur+'s, '+(dur*0.9)+'s';
+      img.style.animationDelay = delay+'s, '+delay+'s';
+
+      stage.appendChild(img);
+      const total = (delay+dur+0.2)*1000;
+      setTimeout(()=> img.remove(), total);
+    }
+
+    function spawnToast(msg="+1 Good Vibe"){
+      const span = document.createElement('span');
+      span.textContent = msg;
+      span.style.position = 'fixed';
+      span.style.left = (Math.random()*70+15)+'%'; // 15%–85%
+      span.style.top = (Math.random()*15+70)+'%';  // 70%–85%
+      span.style.fontWeight = '900';
+      span.style.fontSize = '20px';
+      span.style.color = '#FFD93D';
+      span.style.textShadow = '0 2px 6px rgba(0,0,0,.45)';
+      span.style.opacity = '1';
+      span.style.transition = 'transform 1.8s ease-out, opacity 1.8s ease-out';
+      span.style.zIndex = 60;
+      document.body.appendChild(span);
+      requestAnimationFrame(()=>{
+        span.style.transform = 'translateY(-120px)';
+        span.style.opacity = '0';
+      });
+      setTimeout(()=> span.remove(), 1900);
+    }
+
+    function coinRainBurst(count=24){
+      for(let i=0;i<count;i++) spawnCoin({duration: Math.random()*1.2 + 2.6, delay: Math.random()*0.35});
+      spawnToast();
+    }
+    function coinRainGentle(count=18){
+      for(let i=0;i<count;i++) spawnCoin({duration: Math.random()*1.6 + 4.2, delay: Math.random()*1.4});
+      spawnToast();
+    }
+
+    if(ENABLE_PAGELOAD_RAIN){
+      window.addEventListener('load', ()=> coinRainGentle(22));
+    }
+
+    const buy = document.getElementById('buyBtn');
+    buy?.addEventListener('click', ()=>{
+      coinRainBurst(28);
+      // keep target=_blank to avoid interrupting animation
     });
   </script>
 </body>
