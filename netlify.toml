@@ -3,3 +3,9 @@ for = "/*"
   [headers.values]
   X-Frame-Options = "ALLOWALL"
   Content-Security-Policy = "frame-ancestors https://*.carrd.co"
+
+[[redirects]]
+  from = "https://jogvtoken.com/*"
+  to   = "https://www.jogvtoken.com/:splat"
+  status = 301
+  force = true
