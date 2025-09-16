@@ -1,3 +1,164 @@
+<script>
+  // ---- QUICK CONFIG ----
+  const CONTRACT_ADDR = '0x41D609F37CA4817D4b7fF54614d794a8f0b47d03';
+  const BUY_URL = 'https://app.baseswap.fi/#/swap?outputCurrency=0x41D609F37CA4817D4b7fF54614d794a8f0b47d03';
+  const BASESCAN_URL = 'https://basescan.org/token/0x41D609F37CA4817D4b7fF54614d794a8f0b47d03';
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const id=a.getAttribute('href');
+      if(id.length>1){e.preventDefault(); document.querySelector(id)?.scrollIntoView({behavior:'smooth'});}
+    });
+  });
+
+  // Copy contract address
+  const btn=document.getElementById('copyBtn');
+  btn?.addEventListener('click', async ()=>{
+    try{
+      await navigator.clipboard.writeText(CONTRACT_ADDR);
+      btn.textContent='Copied!'; setTimeout(()=>btn.textContent='Copy',1200);
+    }catch(e){ btn.textContent='Copy failed'; }
+  });
+
+  /* ---------- COIN RAIN + GOOD VIBE TOAST + PINNED COINS ---------- */
+  const COIN_SRC = 'jogv-coin.png'; // transparent PNG in repo root
+  const ENABLE_PAGELOAD_RAIN = true; // set false if you only want the Buy burst
+  const stage = document.getElementById('coinStage');
+
+  function spawnCoin(opts={}){
+    const img = new Image();
+    img.src = COIN_SRC;
+    img.className = 'coin';
+
+    // Bigger coins: 80–120px
+    const w = Math.random()*40 + 80;
+    img.style.width = w+'px';
+    img.style.height = w+'px';
+
+    const startX = Math.random()*window.innerWidth;
+    const drift  = (Math.random()*200 - 100);
+    const dur    = (opts.duration ?? (Math.random()*2.5 + 5)); // 5–7.5s
+    const delay  = (opts.delay ?? Math.random()*1.2);
+    const scale  = Math.random()*0.2 + 1.0;
+
+    // ~40% of coins don't spin (clearer face)
+    const spinless = Math.random() < 0.4;
+
+    img.style.setProperty('--x', startX+'px');
+    img.style.setProperty('--xEnd', (startX+drift)+'px');
+    img.style.setProperty('--s', scale);
+    img.style.setProperty('--r0', (Math.random()*40-20)+'deg');
+    img.style.setProperty('--r1', (Math.random()*240+120)+'deg');
+
+    img.style.animationName = spinless ? 'coin-fall' : 'coin-fall, coin-spin';
+    img.style.animationDuration = spinless ? `${dur}s` : `${dur}s, ${dur*0.9}s`;
+    img.style.animationDelay    = spinless ? `${delay}s` : `${delay}s, ${delay}s`;
+    img.style.animationFillMode = 'forwards';
+
+    stage.appendChild(img);
+
+    const total = (delay+dur+0.5)*1000;
+    setTimeout(()=>{
+      if (maybePinCoin(img)) return; // try to pin a few
+      img.remove();
+    }, total);
+  }
+
+  function spawnToast(msg="+1 Good Vibe"){
+    const span = document.createElement('span');
+    span.textContent = msg;
+    span.style.position = 'fixed';
+    span.style.left = (Math.random()*70+15)+'%';
+    span.style.top = (Math.random()*15+70)+'%';
+    span.style.fontWeight = '900';
+    span.style.fontSize = '22px';
+    span.style.color = '#FFD93D';
+    span.style.textShadow = '0 3px 8px rgba(0,0,0,.45)';
+    span.style.opacity = '1';
+    span.style.transition = 'transform 2.5s ease-out, opacity 2.5s ease-out';
+    span.style.zIndex = 60;
+    document.body.appendChild(span);
+    requestAnimationFrame(()=>{
+      span.style.transform = 'translateY(-160px)';
+      span.style.opacity = '0';
+    });
+    setTimeout(()=> span.remove(), 2700);
+  }
+
+  function coinRainBurst(count=24){
+    for(let i=0;i<count;i++) spawnCoin({duration: Math.random()*2 + 5}); // 5–7s
+    spawnToast();
+  }
+  function coinRainGentle(count=18){
+    for(let i=0;i<count;i++) spawnCoin({duration: Math.random()*2.5 + 5}); // 5–7.5s
+    spawnToast();
+  }
+
+  // --- Clickable pinned coins ---
+  let lastCoinClick = 0;
+  const COIN_CLICK_COOLDOWN = 800; // ms
+  function makePinnedClickable(el){
+    el.style.cursor = "pointer";
+    el.addEventListener('click', ()=>{
+      const now = Date.now();
+      if (now - lastCoinClick < COIN_CLICK_COOLDOWN) return;
+      lastCoinClick = now;
+      coinRainBurst(28);
+      spawnToast();
+      if (navigator.vibrate) navigator.vibrate(10);
+    }, { passive: true });
+  }
+
+  // Pin logic
+  const PIN_SLOTS = [
+    {bottom: 28, left: 28},   // bottom-left
+    {bottom: 28, right: 28},  // bottom-right
+    {bottom: 120, right: 36}, // optional third slot
+  ];
+  let usedSlots = 0;
+  const MAX_PINS = 2; // set to 3 to use all slots
+
+  function createPinnedCoinAt(slot){
+    const pin = new Image();
+    pin.src = COIN_SRC;
+    pin.className = 'coin pinned';
+    pin.style.width = '120px';
+    pin.style.height= '120px';
+    if (slot.left  != null)  pin.style.left  = slot.left  + 'px';
+    if (slot.right != null)  pin.style.right = slot.right + 'px';
+    if (slot.bottom!= null)  pin.style.bottom= slot.bottom+ 'px';
+    stage.appendChild(pin);
+    makePinnedClickable(pin); // make the pinned coin interactive
+    return pin;
+  }
+
+  function maybePinCoin(img){
+    if (usedSlots >= Math.min(MAX_PINS, PIN_SLOTS.length)) return false;
+    if (Math.random() > 0.12) return false; // ~12% chance
+    const slot = PIN_SLOTS[usedSlots++];
+    img.classList.add('pinned');
+    img.style.animation = 'bob 3.2s ease-in-out infinite';
+    img.style.top = 'auto';
+    img.style.bottom = (slot.bottom ?? 28) + 'px';
+    img.style.left = slot.left != null ? (slot.left + 'px') : '';
+    img.style.right = slot.right != null ? (slot.right + 'px') : '';
+    img.style.width = '120px';
+    img.style.height= '120px';
+    makePinnedClickable(img); // clickable pinned
+    return true;
+  }
+
+  // Page-load gentle rain (optional) + ensure one visible pinned coin
+  window.addEventListener('load', ()=>{
+    createPinnedCoinAt(PIN_SLOTS[0]); // always show at least one coin
+    if(ENABLE_PAGELOAD_RAIN) coinRainGentle(22);
+  });
+
+  // Buy-button celebration burst
+  const buy = document.getElementById('buyBtn');
+  buy?.addEventListener('click', ()=> coinRainBurst(28));
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
