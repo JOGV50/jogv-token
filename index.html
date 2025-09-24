@@ -4,29 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>JOGV • Journey of Good Vibes</title>
-  <meta name="description" content="JOGV is a community-powered meme coin spreading positivity. Built on Base.">
+  <meta name="description" content="JOGV is a community-powered meme coin spreading positivity. Built on Base." />
   <meta property="og:title" content="JOGV — Journey of Good Vibes" />
   <meta property="og:description" content="Community-powered meme coin spreading positivity. Built on Base." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://jogvtoken.com/og-image.png" />
-
-  <!-- ========= JOGV CONFIG (edit these only) ========= -->
-  <script>
-    const JOGV = {
-      contract: "0x41D609F37CA4817D4b7fF54614d794a8f0b47d03",
-      maxSupply: "999,999,999.99 JOGV",
-      tax: "2% dev wallet",
-      lpDisplay: "636.3961 BSWAP-LP",
-      // Links
-      basescan: "https://basescan.org/token/0xc54314718E317Cba6299aAf3F08c6CD6B41463AF",
-      trade: "https://baseswap.fi/swap?outputCurrency=0xc54314718E317Cba6299aAf3F08c6CD6B41463AF",
-      chart: "#",       // update when DexTools/Gecko is live
-      litepaper: "#",   // update when PDF is hosted
-      // Asset (ensure this exists at the site root)
-      coinSrc: "jogv-coin.png"
-    };
-  </script>
-  <!-- ================================================= -->
+  <meta property="og:image" content="https://www.jogvtoken.com/jogv-coin.png" />
 
   <style>
     :root{
@@ -63,7 +45,6 @@
     .nav-inner{display:flex;align-items:center;gap:16px}
     .nav .links{display:flex;gap:16px;flex-wrap:wrap;margin-left:auto}
     .nav a{color:#e5e7eb;text-decoration:none;font-weight:700;font-size:14.5px;opacity:.9}
-
     .logo-svg{width:120px;height:auto;vertical-align:middle}
 
     /* HERO */
@@ -81,32 +62,30 @@
     .faq dd{margin:6px 0 14px;color:var(--muted)}
     footer{opacity:.8;font-size:13px;text-align:center;padding:36px 0}
 
-    /* ===== Coin rain stage & mascot ===== */
-    #coinStage{
-      position: fixed; inset: 0;
-      pointer-events: none; z-index: 5;
-      overflow: hidden;
-    }
-    .coin{
-      position: absolute;
-      will-change: transform, opacity;
-      filter: drop-shadow(0 6px 8px rgba(0,0,0,.35));
-      opacity: .95;
-      animation-fill-mode: forwards;
+    /* COIN RAIN */
+    #coinStage { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 9; }
+    .coin {
+      position: fixed; top: -80px; will-change: transform, opacity;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,.4));
+      animation: fall linear forwards;
     }
     @keyframes fall {
-      0%   { transform: translate3d(var(--x), -120px, 0) rotate(var(--r0)); opacity:.0 }
-      8%   { opacity: 1 }
-      100% { transform: translate3d(var(--end), 110vh, 0) rotate(var(--r1)); opacity:.95 }
+      0%   { transform: translate(var(--x), -120px) rotate(var(--r)) scale(var(--s)); opacity:0 }
+      5%   { opacity:1 }
+      100% { transform: translate(var(--End), 110vh) rotate(calc(var(--r) + 900deg)) scale(var(--s)); opacity:.95 }
     }
-    .mascot-coin{
-      position: fixed; left:16px; bottom:16px; width:72px; height:72px;
-      border-radius:50%; background: radial-gradient(ellipse at 40% 35%, rgba(255,255,255,.22), rgba(255,255,255,0));
-      display:grid; place-items:center; cursor:pointer; z-index:6;
+
+    /* Lucky coin (bottom-left trigger) */
+    .lucky {
+      position: fixed; left: 18px; bottom: 18px; z-index: 10;
+      width: 68px; height: 68px; border-radius: 50%; cursor:pointer;
+      background: radial-gradient(45px 45px at 35% 30%, rgba(255,255,255,.25), rgba(255,255,255,0)),
+                  rgba(0,0,0,.15);
+      display:grid; place-items:center; border:1px solid rgba(255,255,255,.15);
       transition: transform .15s ease;
     }
-    .mascot-coin:hover{ transform: scale(1.06) }
-    .mascot-coin img{ width:60px; height:60px; pointer-events:none }
+    .lucky:hover{ transform: scale(1.06) }
+    .lucky img{ width: 56px; height: 56px; pointer-events:none }
   </style>
 </head>
 
@@ -127,6 +106,7 @@
           <text x="0" y="115" font-size="100" font-family="Arial Black, sans-serif" fill="url(#jogvGradient)">JOGV</text>
         </svg>
       </a>
+
       <div class="links">
         <a href="#token">Token</a>
         <a href="#how">How to Buy</a>
@@ -137,14 +117,14 @@
     </div>
   </nav>
 
-  <!-- Falling coins stage -->
+  <!-- COIN RAIN STAGE -->
   <div id="coinStage" aria-hidden="true"></div>
-  <!-- Bottom-left clickable coin -->
-  <button class="mascot-coin" id="mascotCoin" title="+1 Good Vibe">
-    <img src="jogv-coin.png" alt="JOGV coin">
+
+  <!-- Lucky Coin Trigger -->
+  <button class="lucky" id="luckyBtn" aria-label="Make it rain JOGV coins">
+    <img src="jogv-coin.png" alt="JOGV coin" />
   </button>
 
-  <!-- PAGE CONTENT -->
   <main class="container">
     <!-- HERO -->
     <section class="card section" id="hero">
@@ -155,18 +135,18 @@
           <div class="badges">
             <span class="badge"><span class="dot"></span>BASE Network</span>
             <span class="badge">Ticker: <strong>JOGV</strong></span>
-            <span class="badge">Max Supply: <span class="mono" id="badgeSupply">TBD</span></span>
+            <span class="badge">Max Supply: <span class="mono">TBD</span></span>
           </div>
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px">
-            <a class="btn" href="#buy" id="buyBtn">Buy JOGV</a>
-            <a class="btn alt" href="#chart" id="chartBtn">View Chart</a>
+            <a class="btn" id="buyBtn" href="#" rel="noopener">Buy JOGV</a>
+            <a class="btn alt" id="chartBtn" href="#" rel="noopener">View Chart</a>
             <a class="btn alt" href="#community">Join Community</a>
           </div>
           <div style="height:12px"></div>
           <div class="copy">
             <div>
               <div class="muted" style="font-size:12px;letter-spacing:.06em;text-transform:uppercase">Contract Address</div>
-              <div class="mono" id="addr" style="font-size:14.5px">0xYOUR_CONTRACT_ADDRESS_HERE</div>
+              <div class="mono" id="addr" style="font-size:14.5px">0x0000000000000000000000000000000000000000</div>
             </div>
             <button class="btn small" id="copyBtn">Copy</button>
           </div>
@@ -189,22 +169,23 @@
       <div class="grid">
         <div class="card">
           <h2>Tokenomics (V1)</h2>
-          <ul class="muted" id="tokenomicsList">
+          <ul class="muted">
             <li>Total Supply: <span class="mono">TBD</span></li>
-            <li>Tax: <span class="mono">2% dev wallet</span> (subject to update)</li>
-            <li>LP: <span class="mono">TBD</span></li>
-            <li>Future: staking & rewards hooks</li>
+            <li>Tax: <span class="mono">2% dev wallet</span></li>
+            <li>LP Pair: <span class="mono" id="pairAddr">0x…</span> (<a id="pinkLock" href="#" target="_blank" rel="noopener">PinkLock</a>)</li>
+            <li>Liquidity Lock: <a id="lockTx" href="#" target="_blank" rel="noopener">BaseScan Tx</a> • unlocks Sep 25, 2026</li>
+            <li><a id="liquidityDoc" href="#" target="_blank" rel="noopener">Liquidity & Treasury Transparency (doc)</a></li>
           </ul>
         </div>
         <div class="card">
           <h2>Links</h2>
-          <ul class="muted" id="linksList">
-            <li><a href="#etherscan">BaseScan / Etherscan</a> — TBD</li>
-            <li><a href="#dextools">DexTools / GeckoTerminal</a> — TBD</li>
-            <li><a href="#whitepaper">Litepaper (PDF)</a> — TBD</li>
+          <ul class="muted">
+            <li><a id="basescanLink" href="#" target="_blank" rel="noopener">View on BaseScan</a></li>
+            <li><a id="dexLink" href="#" target="_blank" rel="noopener">Trade on BaseSwap</a></li>
+            <li><a id="litepaper" href="#" target="_blank" rel="noopener">Litepaper (coming soon)</a></li>
           </ul>
           <div style="margin-top:8px">
-            <a class="btn" href="#buy">Buy JOGV</a>
+            <a class="btn" id="buyBtn2" href="#" rel="noopener">Buy JOGV</a>
           </div>
         </div>
       </div>
@@ -216,10 +197,10 @@
       <ol class="muted" style="margin-left:18px">
         <li>Install a wallet (e.g., Coinbase Wallet or MetaMask).</li>
         <li>Bridge ETH to <strong>Base</strong> (use the official Base bridge).</li>
-        <li>Open the DEX link and the contract will be preloaded.</li>
-        <li>Set slippage if needed, confirm swap, and you're in ✨</li>
+        <li>Open the DEX link and confirm JOGV is selected (address auto-loaded).</li>
+        <li>Set slippage if needed, confirm swap, and you’re in ✨</li>
       </ol>
-      <div style="margin-top:10px"><a class="btn" href="#buy">Open DEX</a></div>
+      <div style="margin-top:10px"><a class="btn" id="openDex2" href="#" rel="noopener">Open DEX</a></div>
     </section>
 
     <!-- ROADMAP -->
@@ -251,10 +232,11 @@
       <h2>Join the Community</h2>
       <p class="muted">We’re building a friendly space where positivity wins. Come hang out, share memes, and help shape the future of JOGV.</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
-        <a class="btn" href="https://t.me/jogv50">Telegram</a>
-        <a class="btn alt" href="#discord">Discord</a>
-        <a class="btn alt" href="https://x.com/jogv50">X / Twitter</a>
-        <a class="btn alt" href="#youtube">YouTube</a>
+        <a class="btn" href="https://t.me/jogv50" target="_blank" rel="noopener">Telegram</a>
+        <a class="btn alt" href="https://discord.gg/vsTSyX5Z" target="_blank" rel="noopener">Discord</a>
+        <a class="btn alt" href="https://x.com/jogv50" target="_blank" rel="noopener">X / Twitter</a>
+        <a class="btn alt" href="https://github.com/JOGV50" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn alt" href="https://reddit.com/u/jogv50" target="_blank" rel="noopener">Reddit</a>
       </div>
     </section>
 
@@ -264,116 +246,90 @@
   </main>
 
   <script>
-    // Smooth scroll
+    // ---------- Config ----------
+    const CONTRACT = "0xc54314718E317Cba6299aAf3F08c6CD6B41463AF";
+    const BASESCAN = `https://basescan.org/token/${CONTRACT}`;
+    const DEX_TRADE = `https://baseswap.fi/swap?outputCurrency=${CONTRACT}&chainId=8453`;
+    const PINKLOCK = "https://www.pinksale.finance/pinklock/base/record/1017527";
+    const LOCK_TX = "https://basescan.org/tx/0x445a68ece8749ead128b9e7d463405e3d4dc677ba56e90c4b80291d535c90665";
+    const LP_PAIR = "0x45d1cf70afe13787b987bbf56b9b58d72ca99f8f";
+    const LIQ_DOC = "https://github.com/JOGV50/jogv-token/blob/main/JOGV_Liquidity_Treasury_Transparency.docx";
+    const COIN_SRC = "jogv-coin.png"; // local asset in repo root
+    const ENABLE_PAGELOAD_RAIN = true; // set false if you only want button-triggered burst
+
+    // ---------- Nav smooth scroll ----------
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
       a.addEventListener('click',e=>{
         const id=a.getAttribute('href');
         if(id.length>1){e.preventDefault(); document.querySelector(id)?.scrollIntoView({behavior:'smooth'});}
       });
     });
-    // Copy contract address
-    const btn=document.getElementById('copyBtn');
-    btn?.addEventListener('click', async ()=>{
-      const text=document.getElementById('addr').textContent.trim();
-      try{
-        await navigator.clipboard.writeText(text);
-        btn.textContent='Copied!'; setTimeout(()=>btn.textContent='Copy',1200);
-      }catch(e){ btn.textContent='Copy failed'; }
+
+    // ---------- Wire dynamic links ----------
+    const addrEl = document.getElementById('addr');
+    const copyBtn = document.getElementById('copyBtn');
+    const buyBtns = [document.getElementById('buyBtn'), document.getElementById('buyBtn2'), document.getElementById('openDex2')].filter(Boolean);
+    const chartBtn = document.getElementById('chartBtn');
+
+    addrEl.textContent = CONTRACT;
+    copyBtn?.addEventListener('click', async ()=>{
+      try{ await navigator.clipboard.writeText(CONTRACT); copyBtn.textContent='Copied!'; setTimeout(()=>copyBtn.textContent='Copy',1200); }
+      catch(e){ copyBtn.textContent='Copy failed'; }
     });
 
-    /* ----------------- hydrate from JOGV config ----------------- */
-    (function hydrate(){
-      const addrEl = document.getElementById('addr');
-      if (addrEl) addrEl.textContent = JOGV.contract;
-      const badgeSupply = document.getElementById('badgeSupply');
-      if (badgeSupply) badgeSupply.textContent = JOGV.maxSupply;
+    buyBtns.forEach(b=>{ if(b){ b.href = DEX_TRADE; b.target = "_blank"; b.rel = "noopener"; }});
+    if(chartBtn){ chartBtn.href = "https://www.geckoterminal.com/base/pools/" + LP_PAIR; chartBtn.target="_blank"; chartBtn.rel="noopener"; }
 
-      // Tokenomics list
-      const tList = document.getElementById('tokenomicsList');
-      if (tList){
-        tList.innerHTML = `
-          <li>Total Supply: <span class="mono">${JOGV.maxSupply}</span></li>
-          <li>Tax: <span class="mono">${JOGV.tax}</span></li>
-          <li>LP: <span class="mono">${JOGV.lpDisplay}</span></li>
-          <li>Future: staking & rewards hooks</li>
-        `;
-      }
-      // Links list
-      const lList = document.getElementById('linksList');
-      if (lList){
-        lList.innerHTML = `
-          <li><a href="${JOGV.basescan}" target="_blank" rel="noopener">BaseScan / Etherscan</a></li>
-          <li><a href="${JOGV.chart}" target="_blank" rel="noopener">DexTools / GeckoTerminal</a> — TBD</li>
-          <li><a href="${JOGV.litepaper}" target="_blank" rel="noopener">Litepaper (PDF)</a> — TBD</li>
-        `;
-      }
-      // Buttons
-      document.querySelectorAll('a[href="#buy"]').forEach(a => a.href = JOGV.trade);
-      const buyBtn = document.getElementById('buyBtn'); if (buyBtn) buyBtn.href = JOGV.trade;
-      const chartBtn = document.getElementById('chartBtn'); if (chartBtn) chartBtn.href = JOGV.chart;
-    })();
+    document.getElementById('basescanLink').href = BASESCAN;
+    document.getElementById('dexLink').href = DEX_TRADE;
+    document.getElementById('pinkLock').href = PINKLOCK;
+    document.getElementById('lockTx').href = LOCK_TX;
+    document.getElementById('liquidityDoc').href = LIQ_DOC;
+    document.getElementById('pairAddr').textContent = LP_PAIR.replace(LP_PAIR.slice(6, -4), "…");
 
-    /* ----------------- coin rain + bursts ----------------- */
-    (function coins(){
-      const stage = document.getElementById('coinStage');
-      const COIN_SRC = JOGV.coinSrc;
+    // ---------- Coin Rain ----------
+    const stage = document.getElementById('coinStage');
 
-      function spawnCoin(opts={}){
-        const img = new Image();
-        img.src = COIN_SRC;
-        img.className = 'coin';
-        const w = Math.random()*42 + 42;      // 42–84px
-        img.style.width = w + 'px';
+    function spawnCoin(opts={}){
+      const img = new Image();
+      img.src = COIN_SRC;
+      img.className = "coin";
+      const w = Math.random()*26 + 42; // 42–68px
+      img.style.width = w+"px"; img.style.height = w+"px";
 
-        const vw = window.innerWidth;
-        const startX = Math.random()*vw;
-        const drift = (Math.random()*160 - 80); // left/right drift
-        const dur = (opts.duration ?? (Math.random()*1.8 + 3.7)); // ~3.7–5.5s
-        const delay = (opts.delay ?? Math.random()*0.8);
-        const r0 = (Math.random()*60 - 30) + 'deg';
-        const r1 = (Math.random()*540 + 360) + 'deg';
+      const startX = Math.random()*window.innerWidth;
+      const drift = (Math.random()*160 - 80); // left/right drift
+      const dur = (opts.duration ?? (Math.random()*1.5 + 3.5)); // 3.5–5s
+      const delay = (opts.delay ?? Math.random()*0.8);
+      const scale = Math.random()*0.2 + 0.9;
 
-        img.style.setProperty('--x',  startX + 'px');
-        img.style.setProperty('--end', (startX + drift) + 'px');
-        img.style.setProperty('--r0', r0);
-        img.style.setProperty('--r1', r1);
-        img.style.animation = `fall ${dur}s ${delay}s linear forwards`;
+      img.style.setProperty('--x', startX+'px');
+      img.style.setProperty('--End', (startX+drift)+'px');
+      img.style.setProperty('--s', scale);
+      img.style.setProperty('--r', (Math.random()*60-30)+'deg');
+      img.style.animationDuration = dur+'s';
+      img.style.animationDelay = delay+'s';
 
-        stage.appendChild(img);
-        setTimeout(()=> img.remove(), (delay+dur)*1000 + 120);
-      }
+      stage.appendChild(img);
+      const total = (delay+dur+0.2)*1000;
+      setTimeout(()=>{ img.remove(); }, total);
+    }
 
-      function burst(n=14){
-        for (let i=0;i<n;i++){
-          spawnCoin({ delay: (i*0.05) });
-        }
-      }
+    function burst(n=18){
+      for(let i=0;i<n;i++){ spawnCoin({delay:Math.random()*0.9}); }
+    }
 
-      // gentle rain on page load
-      let rainTimer = 0;
-      function startRain(){
-        clearInterval(rainTimer);
-        for (let i=0;i<10;i++) spawnCoin({ delay: Math.random()*0.6 });
-        rainTimer = setInterval(()=> spawnCoin(), 520);
-        setTimeout(()=> clearInterval(rainTimer), 8000);
-      }
-      startRain();
+    // Lucky coin click triggers a burst
+    document.getElementById('luckyBtn')?.addEventListener('click', ()=> burst(22));
 
-      // BUY button burst
-      document.querySelectorAll('a.btn, button.btn').forEach(btn=>{
-        if (/buy/i.test(btn.textContent)) {
-          btn.addEventListener('click', ()=> burst(16));
-        }
-      });
+    // Buy buttons also trigger a fun sprinkle (non-blocking)
+    buyBtns.forEach(b=> b?.addEventListener('click', ()=> burst(14)));
 
-      // bottom-left mascot click → burst
-      document.getElementById('mascotCoin')?.addEventListener('click', ()=> burst(18));
-
-      // rain again after navigating to a section
-      document.querySelectorAll('a[href^="#"]').forEach(a=>{
-        a.addEventListener('click', ()=> setTimeout(startRain, 600));
-      });
-    })();
+    // Gentle page-load rain
+    if(ENABLE_PAGELOAD_RAIN){
+      let i=0, max=22;
+      const t = setInterval(()=>{ spawnCoin(); if(++i>=max) clearInterval(t); }, 140);
+    }
   </script>
 </body>
 </html>
