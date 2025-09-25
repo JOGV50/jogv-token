@@ -62,8 +62,9 @@
     .faq dd{margin:6px 0 14px;color:var(--muted)}
     footer{opacity:.8;font-size:13px;text-align:center;padding:36px 0}
 
-    /* COIN RAIN */
-    #coinStage { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 9; }
+    /* COIN RAIN LAYER (kept behind content) */
+    #coinStage { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+    main, .nav, footer { position: relative; z-index: 2; }
     .coin {
       position: fixed; top: -80px; will-change: transform, opacity;
       filter: drop-shadow(0 2px 2px rgba(0,0,0,.4));
@@ -78,14 +79,15 @@
     /* Lucky coin (bottom-left trigger) */
     .lucky {
       position: fixed; left: 18px; bottom: 18px; z-index: 10;
-      width: 68px; height: 68px; border-radius: 50%; cursor:pointer;
-      background: radial-gradient(45px 45px at 35% 30%, rgba(255,255,255,.25), rgba(255,255,255,0)),
+      width: 92px; height: 92px; border-radius: 50%; cursor:pointer;
+      background: radial-gradient(55px 55px at 35% 30%, rgba(255,255,255,.25), rgba(255,255,255,0)),
                   rgba(0,0,0,.15);
-      display:grid; place-items:center; border:1px solid rgba(255,255,255,.15);
-      transition: transform .15s ease;
+      display:grid; place-items:center; border:1px solid rgba(255,255,255,.18);
+      transition: transform .15s ease, box-shadow .15s ease;
+      box-shadow: 0 6px 16px rgba(0,0,0,.35);
     }
     .lucky:hover{ transform: scale(1.06) }
-    .lucky img{ width: 56px; height: 56px; pointer-events:none }
+    .lucky img{ width: 78px; height: 78px; pointer-events:none }
   </style>
 </head>
 
@@ -107,12 +109,13 @@
         </svg>
       </a>
 
+      <!-- NOTE: only these links get smooth-scroll -->
       <div class="links">
-        <a href="#token">Token</a>
-        <a href="#how">How to Buy</a>
-        <a href="#roadmap">Roadmap</a>
-        <a href="#faq">FAQ</a>
-        <a href="#community">Community</a>
+        <a class="scroll" href="#token">Token</a>
+        <a class="scroll" href="#how">How to Buy</a>
+        <a class="scroll" href="#roadmap">Roadmap</a>
+        <a class="scroll" href="#faq">FAQ</a>
+        <a class="scroll" href="#community">Community</a>
       </div>
     </div>
   </nav>
@@ -140,7 +143,7 @@
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px">
             <a class="btn" id="buyBtn" href="#" rel="noopener">Buy JOGV</a>
             <a class="btn alt" id="chartBtn" href="#" rel="noopener">View Chart</a>
-            <a class="btn alt" href="#community">Join Community</a>
+            <a class="btn alt scroll" href="#community">Join Community</a>
           </div>
           <div style="height:12px"></div>
           <div class="copy">
@@ -154,6 +157,186 @@
 
         <div class="card" style="text-align:left">
           <h3 style="margin:0 0 8px">What is JOGV?</h3>
+          <p class="muted">JOGV is the token at the heart of the <em>Journey of Good Vibes</em> movement — a community built around positivity, playful meme culture, and real utility.</p>
+          <ul class="muted">
+            <li>Fun, friendly branding designed for youth-driven adoption.</li>
+            <li>Transparent tokenomics with future hooks for staking/rewards.</li>
+            <li>Roadmap focused on community, merch, and a light game prototype.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOKEN -->
+    <section class="section" id="token">
+      <div class="grid">
+        <div class="card">
+          <h2>Tokenomics (V1)</h2>
+          <ul class="muted">
+            <li>Total Supply: <span class="mono">TBD</span></li>
+            <li>Tax: <span class="mono">2% dev wallet</span></li>
+            <li>LP Pair: <span class="mono" id="pairAddr">0x…</span> (<a id="pinkLock" href="#" target="_blank" rel="noopener">PinkLock</a>)</li>
+            <li>Liquidity Lock: <a id="lockTx" href="#" target="_blank" rel="noopener">BaseScan Tx</a> • unlocks Sep 25, 2026</li>
+            <li><a id="liquidityDoc" href="#" target="_blank" rel="noopener">Liquidity & Treasury Transparency (doc)</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Links</h2>
+          <ul class="muted">
+            <li><a id="basescanLink" href="#" target="_blank" rel="noopener">View on BaseScan</a></li>
+            <li><a id="dexLink" href="#" target="_blank" rel="noopener">Trade on BaseSwap</a></li>
+            <li><a id="litepaper" href="#" target="_blank" rel="noopener">Litepaper (coming soon)</a></li>
+          </ul>
+          <div style="margin-top:8px">
+            <a class="btn" id="buyBtn2" href="#" rel="noopener">Buy JOGV</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW TO BUY -->
+    <section class="card section" id="how">
+      <h2>How to Buy on Base</h2>
+      <ol class="muted" style="margin-left:18px">
+        <li>Install a wallet (e.g., Coinbase Wallet or MetaMask).</li>
+        <li>Bridge ETH to <strong>Base</strong> (use the official Base bridge).</li>
+        <li>Open the DEX link and confirm JOGV is selected (address auto-loaded).</li>
+        <li>Set slippage if needed, confirm swap, and you’re in ✨</li>
+      </ol>
+      <div style="margin-top:10px"><a class="btn" id="openDex2" href="#" rel="noopener">Open DEX</a></div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section class="card section" id="roadmap">
+      <h2>Roadmap</h2>
+      <div class="grid">
+        <div class="card"><strong>Phase 1</strong><p class="muted">Token launch on Base • Site + socials • Community bootstrap</p></div>
+        <div class="card"><strong>Phase 2</strong><p class="muted">Liquidity • Charts • Listings • Meme + giveaway campaigns</p></div>
+        <div class="card"><strong>Phase 3</strong><p class="muted">Merch drops • Partnerships • Light game prototype</p></div>
+        <div class="card"><strong>Phase 4</strong><p class="muted">Ecosystem growth • Content & books • Community grants</p></div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="card section" id="faq">
+      <h2>FAQ</h2>
+      <dl class="faq">
+        <dt>What’s the purpose of JOGV?</dt>
+        <dd>To spread good vibes through a fun, youth-friendly brand while building a transparent, community-first token.</dd>
+        <dt>Is this financial advice?</dt>
+        <dd>No. JOGV is a community project — please DYOR.</dd>
+        <dt>Where can I get updates?</dt>
+        <dd>Follow our socials below and join the community chat.</dd>
+      </dl>
+    </section>
+
+    <!-- COMMUNITY -->
+    <section class="card section" id="community">
+      <h2>Join the Community</h2>
+      <p class="muted">We’re building a friendly space where positivity wins. Come hang out, share memes, and help shape the future of JOGV.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+        <a class="btn" href="https://t.me/jogv50" target="_blank" rel="noopener">Telegram</a>
+        <a class="btn" href="https://discord.gg/vsTSyX5Z" target="_blank" rel="noopener">Discord</a>
+        <a class="btn" href="https://x.com/jogv50" target="_blank" rel="noopener">X / Twitter</a>
+        <a class="btn" href="https://github.com/JOGV50" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://reddit.com/u/jogv50" target="_blank" rel="noopener">Reddit</a>
+        <a class="btn" href="https://www.facebook.com/share/1Cy5SQjfeU/" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </section>
+
+    <footer>
+      © 2025 SaaR Media Group LLC · Not financial advice. Community project.
+    </footer>
+  </main>
+
+  <script>
+    // ---------- Config ----------
+    const CONTRACT = "0xc54314718E317Cba6299aAf3F08c6CD6B41463AF";
+    const BASESCAN = `https://basescan.org/token/${CONTRACT}`;
+    const DEX_TRADE = `https://baseswap.fi/swap?outputCurrency=${CONTRACT}&chainId=8453`;
+    const PINKLOCK = "https://www.pinksale.finance/pinklock/base/record/1017527";
+    const LOCK_TX = "https://basescan.org/tx/0x445a68ece8749ead128b9e7d463405e3d4dc677ba56e90c4b80291d535c90665";
+    const LP_PAIR = "0x45d1cf70afe13787b987bbf56b9b58d72ca99f8f";
+    const LIQ_DOC = "https://github.com/JOGV50/jogv-token/blob/main/JOGV_Liquidity_Treasury_Transparency.docx";
+    const COIN_SRC = "jogv-coin.png";
+    const ENABLE_PAGELOAD_RAIN = true;
+
+    // ---------- Smooth scroll ONLY for nav links ----------
+    document.querySelectorAll('a.scroll').forEach(a=>{
+      a.addEventListener('click',e=>{
+        const id=a.getAttribute('href');
+        if(id && id.startsWith('#')){ e.preventDefault(); document.querySelector(id)?.scrollIntoView({behavior:'smooth'}); }
+      });
+    });
+
+    // ---------- Wire dynamic links ----------
+    const addrEl = document.getElementById('addr');
+    const copyBtn = document.getElementById('copyBtn');
+    const buyBtns = [document.getElementById('buyBtn'), document.getElementById('buyBtn2'), document.getElementById('openDex2')].filter(Boolean);
+    const chartBtn = document.getElementById('chartBtn');
+
+    addrEl.textContent = CONTRACT;
+    copyBtn?.addEventListener('click', async ()=>{
+      try{ await navigator.clipboard.writeText(CONTRACT); copyBtn.textContent='Copied!'; setTimeout(()=>copyBtn.textContent='Copy',1200); }
+      catch(e){ copyBtn.textContent='Copy failed'; }
+    });
+
+    buyBtns.forEach(b=>{ if(b){ b.href = DEX_TRADE; b.target = "_blank"; b.rel = "noopener"; }});
+    if(chartBtn){ chartBtn.href = "https://www.geckoterminal.com/base/pools/" + LP_PAIR; chartBtn.target="_blank"; chartBtn.rel="noopener"; }
+
+    document.getElementById('basescanLink').href = BASESCAN;
+    document.getElementById('dexLink').href = DEX_TRADE;
+    document.getElementById('pinkLock').href = PINKLOCK;
+    document.getElementById('lockTx').href = LOCK_TX;
+    document.getElementById('liquidityDoc').href = LIQ_DOC;
+    document.getElementById('pairAddr').textContent = LP_PAIR.replace(LP_PAIR.slice(6, -4), "…");
+
+    // ---------- Coin Rain ----------
+    const stage = document.getElementById('coinStage');
+
+    function spawnCoin(opts={}){
+      const img = new Image();
+      img.src = COIN_SRC;
+      img.className = "coin";
+      const w = Math.random()*30 + 54; // 54–84px (slightly larger for clarity on mobile)
+      img.style.width = w+"px"; img.style.height = w+"px";
+
+      const startX = Math.random()*window.innerWidth;
+      const drift = (Math.random()*160 - 80); // left/right drift
+      const dur = (opts.duration ?? (Math.random()*1.5 + 3.8)); // 3.8–5.3s
+      const delay = (opts.delay ?? Math.random()*0.9);
+      const scale = Math.random()*0.18 + 0.95;
+
+      img.style.setProperty('--x', startX+'px');
+      img.style.setProperty('--End', (startX+drift)+'px');
+      img.style.setProperty('--s', scale);
+      img.style.setProperty('--r', (Math.random()*60-30)+'deg');
+      img.style.animationDuration = dur+'s';
+      img.style.animationDelay = delay+'s';
+
+      stage.appendChild(img);
+      const total = (delay+dur+0.2)*1000;
+      setTimeout(()=>{ img.remove(); }, total);
+    }
+
+    function burst(n=22){
+      for(let i=0;i<n;i++){ spawnCoin({delay:Math.random()*0.9}); }
+    }
+
+    // Lucky coin click triggers a burst
+    document.getElementById('luckyBtn')?.addEventListener('click', ()=> burst(26));
+
+    // Buy buttons also trigger a sprinkle (non-blocking)
+    buyBtns.forEach(b=> b?.addEventListener('click', ()=> burst(16)));
+
+    // Gentle page-load rain
+    if(ENABLE_PAGELOAD_RAIN){
+      let i=0, max=24;
+      const t = setInterval(()=>{ spawnCoin(); if(++i>=max) clearInterval(t); }, 140);
+    }
+  </script>
+</body>
+</html>          <h3 style="margin:0 0 8px">What is JOGV?</h3>
           <p class="muted">JOGV is the token at the heart of the <em>Journey of Good Vibes</em> movement — a community built around positivity, playful meme culture, and real utility.</p>
           <ul class="muted">
             <li>Fun, friendly branding designed for youth-driven adoption.</li>
