@@ -8,11 +8,12 @@
   <meta property="og:title" content="JOGV — Journey of Good Vibes" />
   <meta property="og:description" content="Community-powered meme coin spreading positivity. Built on Base." />
   <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://jogvtoken.com/jogv-coin.png" />
 
   <style>
     :root{
       --bg:#0b0d14; --card:#121521; --muted:#9aa3b2; --text:#f3f4f6;
-      --purple:#9B5DE5; --teal:#00F5D4; --coral:#FF6B6B; --yellow:#FFD93D;
+      --blue1:#00c6ff; --blue2:#0072ff;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -20,20 +21,32 @@
       margin:0;
       font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
       background:
-        radial-gradient(1200px 800px at 10% -10%, rgba(155,93,229,.15), transparent 60%),
-        radial-gradient(900px 600px at 110% 0%, rgba(0,245,212,.12), transparent 60%),
+        radial-gradient(1200px 800px at 10% -10%, rgba(0,198,255,.15), transparent 60%),
+        radial-gradient(900px 600px at 110% 0%, rgba(0,114,255,.12), transparent 60%),
         var(--bg);
       color:var(--text)
     }
-    a{color:var(--teal)}
+    a{color:var(--blue1); text-decoration:none}
     .container{max-width:1120px;margin:0 auto;padding:24px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;text-decoration:none;border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--purple),var(--teal),var(--yellow),var(--coral));color:#0b0d14;box-shadow:0 8px 24px rgba(0,0,0,.35)}
-    .btn.alt{background:#161a2a;color:#e5e7eb;border:1px solid rgba(255,255,255,.1)}
+
+    /* Buttons */
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+      text-decoration:none;border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;
+      background:linear-gradient(90deg,var(--blue1),var(--blue2));color:#0b0d14;
+      box-shadow:0 8px 24px rgba(0,0,0,.35)
+    }
     .btn.small{padding:8px 12px;border-radius:10px;font-weight:700}
+
     .muted{color:var(--muted)}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:24px}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:24px
+    }
     .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+
+    /* NAV */
     .nav{
       position:sticky; top:0; z-index:20;
       background:rgba(11,13,20,.7); backdrop-filter:saturate(140%) blur(8px);
@@ -43,14 +56,15 @@
     .nav .links{display:flex;gap:16px;flex-wrap:wrap;margin-left:auto}
     .nav a{color:#e5e7eb;text-decoration:none;font-weight:700;font-size:14.5px;opacity:.9}
     .logo-svg{width:120px;height:auto;vertical-align:middle}
-    .brand-text{font-size:22px;font-weight:900;color:#e5e7eb}
+
+    /* HERO */
     .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
     @media (max-width:900px){.hero{grid-template-columns:1fr}}
     .title{font-size:clamp(28px,4.4vw,48px);line-height:1.05;margin:0 0 8px;font-weight:900}
     .subtitle{margin:0 0 14px;color:var(--muted)}
     .badges{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 4px}
     .badge{display:inline-flex;align-items:center;gap:8px;background:#0e1220;border:1px solid rgba(255,255,255,.08);color:#b8c0cc;padding:8px 12px;border-radius:999px;font-size:13px}
-    .badge .dot{width:8px;height:8px;border-radius:999px;background:var(--teal)}
+    .badge .dot{width:8px;height:8px;border-radius:999px;background:var(--blue1)}
     .copy{display:flex;gap:10px;align-items:center;background:#0e1220;border:1px dashed rgba(255,255,255,.2);padding:10px 12px;border-radius:12px}
     .section{scroll-margin-top:90px;margin-top:26px}
     .section h2{margin:0 0 10px;font-size:clamp(22px,3.2vw,30px)}
@@ -75,7 +89,6 @@
       filter: drop-shadow(0 10px 22px rgba(0,0,0,.45));
     }
     @media (max-width:600px){ .sticky-coin{ width:74px; height:74px; } }
-
   </style>
 </head>
 
@@ -86,12 +99,10 @@
       <a href="#hero" class="brand" style="display:flex;align-items:center;gap:12px;text-decoration:none">
         <svg class="logo-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
-            <!-- REVERSED gradient: purple -> teal -> yellow -> coral -->
+            <!-- STATIC BLUE GRADIENT FOR BANNER TEXT -->
             <linearGradient id="jogvGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#9B5DE5"/>
-              <stop offset="33%" stop-color="#00F5D4"/>
-              <stop offset="66%" stop-color="#FFD93D"/>
-              <stop offset="100%" stop-color="#FF6B6B"/>
+              <stop offset="0%" stop-color="#00c6ff"/>
+              <stop offset="100%" stop-color="#0072ff"/>
             </linearGradient>
           </defs>
           <text x="0" y="115" font-size="100" font-family="Arial Black, sans-serif" fill="url(#jogvGradient)">JOGV</text>
@@ -121,7 +132,7 @@
           </div>
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px">
             <a class="btn" id="buyBtn" href="https://baseswap.fi/#/swap?inputCurrency=0xc54314718E317Cba6299aAf3F08c6CD6B41463AF" target="_blank" rel="noopener">Buy JOGV</a>
-            <a class="btn" id="chartBtn" href="https://www.geckoterminal.com/base/pools/0x45d1cf70afe13787b987bbf56b9b58d72ca99f8f?utm_source=coingecko&utm_medium=referral&utm_campaign=searchresults" target="_blank" rel="noopener">View Chart</a>
+            <a class="btn" id="chartBtn" href="https://dexscreener.com/base/0x45d1cf70afe13787b987bbf56b9b58d72ca99f8f" target="_blank" rel="noopener">View Chart</a>
             <a class="btn scroll" href="#community">Join Community</a>
           </div>
           <div style="height:12px"></div>
@@ -133,7 +144,6 @@
             <button class="btn small" id="copyBtn">Copy</button>
           </div>
         </div>
-
         <div class="card" style="text-align:left">
           <h3 style="margin:0 0 8px">What is JOGV?</h3>
           <p class="muted">JOGV is the token at the heart of the <em>Journey of Good Vibes</em> movement — a community built around positivity, playful meme culture, and real utility.</p>
@@ -157,16 +167,18 @@
             <li>Future: staking & rewards hooks</li>
           </ul>
           <p class="muted" style="margin-top:8px">
-            🔒 Transparency: <a href="https://github.com/JOGV50/jogv-token/raw/d89ce7931f794d5123286abc4898bdcf3adb9aad/JOGV_Liquidity_Treasury_Transparency.docx" target="_blank" rel="noopener">Liquidity & Treasury Transparency (doc)</a>
+            📄 <a href="https://github.com/JOGV50/jogv-token/raw/d89ce7931f794d5123286abc4898bdcf3adb9aad/JOGV_Litepaper.pdf" target="_blank" rel="noopener">Litepaper (PDF)</a><br/>
+            🔒 <a href="https://github.com/JOGV50/jogv-token/raw/d89ce7931f794d5123286abc4898bdcf3adb9aad/JOGV_Liquidity_Treasury_Transparency.docx" target="_blank" rel="noopener">Liquidity & Treasury Transparency (DOCX)</a>
           </p>
         </div>
+
         <div class="card">
           <h2>Links</h2>
           <ul class="muted">
             <li><a href="https://basescan.org/token/0xc54314718E317Cba6299aAf3F08c6CD6B41463AF" target="_blank" rel="noopener">View on BaseScan</a></li>
             <li><a href="https://baseswap.fi/#/swap?inputCurrency=0xc54314718E317Cba6299aAf3F08c6CD6B41463AF" target="_blank" rel="noopener">Trade on BaseSwap</a></li>
-            <li><a href="https://www.geckoterminal.com/base/pools/0x45d1cf70afe13787b987bbf56b9b58d72ca99f8f?utm_source=coingecko&utm_medium=referral&utm_campaign=searchresults" target="_blank" rel="noopener">Chart on GeckoTerminal</a></li>
-            <li><a href="https://github.com/JOGV50/jogv-token/raw/d89ce7931f794d5123286abc4898bdcf3adb9aad/JOGV_Litepaper.pdf" target="_blank" rel="noopener">Litepaper (PDF)</a></li>
+            <li><a href="https://dexscreener.com/base/0x45d1cf70afe13787b987bbf56b9b58d72ca99f8f" target="_blank" rel="noopener">DexScreener (charts)</a></li>
+            <li><a href="https://www.geckoterminal.com/base/pools/0x45d1cf70afe13787b987bbf56b9b58d72ca99f8f?utm_source=coingecko&utm_medium=referral&utm_campaign=searchresults" target="_blank" rel="noopener">GeckoTerminal (CoinGecko)</a></li>
           </ul>
           <div style="margin-top:8px">
             <a class="btn" href="https://baseswap.fi/#/swap?inputCurrency=0xc54314718E317Cba6299aAf3F08c6CD6B41463AF" target="_blank" rel="noopener">Buy JOGV</a>
@@ -180,11 +192,9 @@
       <h2>How to Buy on Base</h2>
       <ol class="muted" style="margin-left:18px">
         <li><strong>Set up a wallet:</strong> Install MetaMask (browser or mobile). Save your recovery phrase securely.</li>
-        <li><strong>Add Base network:</strong>  
-          Name: Base · RPC: https://mainnet.base.org/ · Chain ID: 8453 · Symbol: ETH · Explorer: https://basescan.org/</li>
+        <li><strong>Add Base network:</strong> Name: Base · RPC: https://mainnet.base.org/ · Chain ID: 8453 · Symbol: ETH · Explorer: https://basescan.org/</li>
         <li><strong>Fund with ETH:</strong> Buy in MetaMask or transfer from an exchange to your wallet on Base.</li>
-        <li><strong>Swap for JOGV:</strong> Open BaseSwap (link below). If needed, paste the contract:<br>
-          <span class="mono">0xc54314718E317Cba6299aAf3F08c6CD6B41463AF</span></li>
+        <li><strong>Swap for JOGV:</strong> Open BaseSwap (link below). If needed, paste the contract:<br><span class="mono">0xc54314718E317Cba6299aAf3F08c6CD6B41463AF</span></li>
         <li><strong>Confirm:</strong> Approve & swap. Welcome to the Journey of Good Vibes ✨</li>
       </ol>
       <div style="margin-top:10px">
@@ -220,7 +230,7 @@
         <div class="card"><strong>Phase 1</strong><p class="muted">Token launch on Base • Site + socials • Community bootstrap</p></div>
         <div class="card"><strong>Phase 2</strong><p class="muted">Liquidity • Charts • Listings • Meme + giveaway campaigns</p></div>
         <div class="card"><strong>Phase 3</strong><p class="muted">Merch drops • Partnerships • Light game prototype</p></div>
-        <div class="card"><strong>Phase 4</strong><p class="muted">Ecosystem growth • Content & books • Community grants</p></div>
+        <div class="card"><strong>Phase 4</strong><p class="muted">Ecosystem growth • Content & books • Apps & Games</p></div>
       </div>
     </section>
 
@@ -233,7 +243,7 @@
         <dt>What chain is JOGV on?</dt>
         <dd>JOGV is live on Base (L2 on Ethereum). Add Base to MetaMask to trade it.</dd>
         <dt>Is liquidity locked?</dt>
-        <dd>Yes — liquidity is locked for transparency and trust.</dd>
+        <dd>Yes — liquidity is locked for transparency and trust. See our transparency doc above.</dd>
         <dt>Is this financial advice?</dt>
         <dd>No. JOGV is a community project — please DYOR.</dd>
         <dt>Where can I get updates?</dt>
@@ -260,7 +270,7 @@
     </footer>
   </main>
 
-  <!-- sticky coin -->
+  <!-- sticky coin (click to rain) -->
   <img src="./jogv-coin.png" alt="JOGV coin" id="stickyCoin" class="sticky-coin" />
 
   <script>
@@ -272,7 +282,7 @@
       });
     });
 
-    // Copy contract address
+    // Copy contract
     const btn=document.getElementById('copyBtn');
     btn?.addEventListener('click', async ()=>{
       const text=document.getElementById('addr').textContent.trim();
@@ -282,21 +292,21 @@
       }catch(e){ btn.textContent='Copy failed'; }
     });
 
-    // --- Falling coins ---
-    const COIN_SRC = 'jogv-coin.png'; // file at repo root
+    // Falling coins
+    const COIN_SRC = 'jogv-coin.png';
     const stage = document.body;
 
     function spawnCoin(opts={}){
       const img = new Image();
       img.src = COIN_SRC;
       img.className = 'coin';
-      const w = Math.random()*36 + 56; // 56-92px
+      const w = Math.random()*36 + 56;
       img.style.width = w+'px';
       img.style.height = 'auto';
 
       const startX = Math.random()*window.innerWidth;
-      const drift = (Math.random()*160 - 80); // left/right drift
-      const dur = (opts.duration ?? (Math.random()*1.6 + 3.4)); // ~3.4-5s
+      const drift = (Math.random()*160 - 80);
+      const dur = (opts.duration ?? (Math.random()*1.6 + 3.4));
       const delay = (opts.delay) ?? Math.random()*0.8;
       const r0 = Math.random()*60-30;
       const r1 = r0 + (Math.random()*720-360);
@@ -315,10 +325,7 @@
     function burst(n=12){ for(let i=0;i<n;i++) spawnCoin({delay:Math.random()*0.6}); }
     function gentleRain(n=14){ for(let i=0;i<n;i++) spawnCoin({delay:Math.random()*1.2, duration: 4 + Math.random()*2}); }
 
-    // On load: gentle rain
     window.addEventListener('load', ()=> gentleRain(16));
-
-    // Buy button & sticky coin trigger bursts
     document.getElementById('buyBtn')?.addEventListener('click', ()=> burst(16));
     document.getElementById('stickyCoin')?.addEventListener('click', ()=> burst(14));
   </script>
