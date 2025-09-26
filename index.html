@@ -29,12 +29,12 @@
     a{color:var(--blue1); text-decoration:none}
     .container{max-width:1120px;margin:0 auto;padding:24px}
 
-    /* Buttons */
+    /* Buttons (static blue gradient) */
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
-      text-decoration:none;border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;
+      border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;
       background:linear-gradient(90deg,var(--blue1),var(--blue2));color:#0b0d14;
-      box-shadow:0 8px 24px rgba(0,0,0,.35)
+      box-shadow:0 8px 24px rgba(0,0,0,.35); text-decoration:none;
     }
     .btn.small{padding:8px 12px;border-radius:10px;font-weight:700}
 
@@ -54,7 +54,8 @@
     }
     .nav-inner{display:flex;align-items:center;gap:16px}
     .nav .links{display:flex;gap:16px;flex-wrap:wrap;margin-left:auto}
-    .nav a{color:#e5e7eb;text-decoration:none;font-weight:700;font-size:14.5px;opacity:.9}
+    .nav a{color:#e5e7eb;font-weight:700;font-size:14.5px;opacity:.9}
+
     .logo-svg{width:120px;height:auto;vertical-align:middle}
 
     /* HERO */
@@ -72,23 +73,19 @@
     .faq dd{margin:6px 0 14px;color:var(--muted)}
     footer{opacity:.8;font-size:13px;text-align:center;padding:36px 0}
 
-    /* Falling coins */
+    /* Coin rain */
+    #coinStage{position:fixed;inset:0;pointer-events:none;z-index:9;overflow:hidden}
     .coin{
-      position:fixed; top:-80px; z-index:5; pointer-events:none;
-      filter: drop-shadow(0 6px 14px rgba(0,0,0,.4));
-      animation: fall linear forwards;
-    }
-    @keyframes fall{
-      from { transform: translateY(0) rotate(var(--r0)); }
-      to   { transform: translateY(calc(100vh + 140px)) translateX(var(--x drift)) rotate(var(--r1)); }
+      position:absolute; top:-100px; left:0;
+      will-change:transform,opacity; filter: drop-shadow(0 6px 14px rgba(0,0,0,.45));
     }
 
-    /* Bottom-left sticky coin */
+    /* Bottom-left sticky coin trigger */
     .sticky-coin{
-      position:fixed; left:16px; bottom:16px; z-index:15; width:84px; height:84px; cursor:pointer;
+      position:fixed; left:16px; bottom:16px; z-index:15; width:84px; height:auto; cursor:pointer;
       filter: drop-shadow(0 10px 22px rgba(0,0,0,.45));
     }
-    @media (max-width:600px){ .sticky-coin{ width:74px; height:74px; } }
+    @media (max-width:600px){ .sticky-coin{ width:74px; } }
   </style>
 </head>
 
@@ -96,10 +93,10 @@
   <!-- NAVBAR -->
   <nav class="nav">
     <div class="container nav-inner">
-      <a href="#hero" class="brand" style="display:flex;align-items:center;gap:12px;text-decoration:none">
+      <a href="#hero" style="display:flex;align-items:center;gap:12px;text-decoration:none">
         <svg class="logo-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
-            <!-- STATIC BLUE GRADIENT FOR BANNER TEXT -->
+            <!-- Static BLUE gradient for JOGV text -->
             <linearGradient id="jogvGradient" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stop-color="#00c6ff"/>
               <stop offset="100%" stop-color="#0072ff"/>
@@ -118,6 +115,9 @@
     </div>
   </nav>
 
+  <!-- Coin rain stage -->
+  <div id="coinStage" aria-hidden="true"></div>
+
   <main class="container">
     <!-- HERO -->
     <section class="card section" id="hero">
@@ -135,15 +135,17 @@
             <a class="btn" id="chartBtn" href="https://dexscreener.com/base/0x45d1cf70afe13787b987bbf56b9b58d72ca99f8f" target="_blank" rel="noopener">View Chart</a>
             <a class="btn scroll" href="#community">Join Community</a>
           </div>
+
           <div style="height:12px"></div>
           <div class="copy">
             <div>
               <div class="muted" style="font-size:12px;letter-spacing:.06em;text-transform:uppercase">Contract Address</div>
               <div class="mono" id="addr" style="font-size:14.5px">0xc54314718E317Cba6299aAf3F08c6CD6B41463AF</div>
             </div>
-            <button class="btn small" id="copyBtn">Copy</button>
+            <button class="btn small" id="copyBtn" type="button">Copy</button>
           </div>
         </div>
+
         <div class="card" style="text-align:left">
           <h3 style="margin:0 0 8px">What is JOGV?</h3>
           <p class="muted">JOGV is the token at the heart of the <em>Journey of Good Vibes</em> movement — a community built around positivity, playful meme culture, and real utility.</p>
@@ -209,18 +211,10 @@
         At Journey of Good Vibes™, we believe life isn’t about avoiding challenges — it’s about rising above them. One of the most uplifting stories captures this perfectly:
       </p>
       <h3 style="margin:12px 0 8px">The Donkey in the Well</h3>
-      <p class="muted">
-        A farmer’s donkey once fell into an old well. The animal cried piteously for hours as the farmer tried to figure out what to do. Finally, he decided the donkey was old, and the well needed to be covered up—so he invited his neighbors to help him bury the animal in the well and put it out of its misery.
-      </p>
-      <p class="muted">
-        They grabbed shovels and began to throw dirt into the well. At first, the donkey realized what was happening and cried horribly. Then, with each shovel of dirt, something surprising happened: the donkey shook it off and stepped upward.
-      </p>
-      <p class="muted">
-        As the dirt continued to fall, the donkey kept shaking it off and climbing higher — shake, step; shake, step. Finally, to everyone’s astonishment, the donkey stepped out of the well and walked away, stronger than before.
-      </p>
-      <p class="muted">
-        The lesson is simple: Life will throw dirt on you — setbacks, critics, challenges. Don’t let it bury you. Shake it off, step up, and rise higher. That’s the essence of Journey of Good Vibes™ — no matter what comes your way, you can turn it into growth, strength, and freedom.
-      </p>
+      <p class="muted">A farmer’s donkey once fell into an old well. The animal cried piteously for hours as the farmer tried to figure out what to do. Finally, he decided the donkey was old, and the well needed to be covered up—so he invited his neighbors to help him bury the animal in the well and put it out of its misery.</p>
+      <p class="muted">They grabbed shovels and began to throw dirt into the well. At first, the donkey realized what was happening and cried horribly. Then, with each shovel of dirt, something surprising happened: the donkey shook it off and stepped upward.</p>
+      <p class="muted">As the dirt continued to fall, the donkey kept shaking it off and climbing higher — shake, step; shake, step. Finally, to everyone’s astonishment, the donkey stepped out of the well and walked away, stronger than before.</p>
+      <p class="muted">The lesson is simple: Life will throw dirt on you — setbacks, critics, challenges. Don’t let it bury you. Shake it off, step up, and rise higher. That’s the essence of Journey of Good Vibes™ — no matter what comes your way, you can turn it into growth, strength, and freedom.</p>
     </section>
 
     <!-- ROADMAP -->
@@ -270,64 +264,82 @@
     </footer>
   </main>
 
-  <!-- sticky coin (click to rain) -->
+  <!-- Sticky coin trigger (click to rain) -->
   <img src="./jogv-coin.png" alt="JOGV coin" id="stickyCoin" class="sticky-coin" />
 
   <script>
-    // Smooth scroll for internal anchors
+    // Smooth scroll for in-page anchors
     document.querySelectorAll('a.scroll[href^="#"]').forEach(a=>{
       a.addEventListener('click',e=>{
         const id=a.getAttribute('href');
-        if(id.length>1){e.preventDefault(); document.querySelector(id)?.scrollIntoView({behavior:'smooth'});}
+        if(id && id.length>1){ e.preventDefault(); document.querySelector(id)?.scrollIntoView({behavior:'smooth'}); }
       });
     });
 
-    // Copy contract
-    const btn=document.getElementById('copyBtn');
-    btn?.addEventListener('click', async ()=>{
+    // Copy contract address
+    const copyBtn=document.getElementById('copyBtn');
+    copyBtn?.addEventListener('click', async ()=>{
       const text=document.getElementById('addr').textContent.trim();
       try{
         await navigator.clipboard.writeText(text);
-        btn.textContent='Copied!'; setTimeout(()=>btn.textContent='Copy',1200);
-      }catch(e){ btn.textContent='Copy failed'; }
+        copyBtn.textContent='Copied!'; setTimeout(()=>copyBtn.textContent='Copy',1200);
+      }catch(e){ copyBtn.textContent='Copy failed'; }
     });
 
-    // Falling coins
+    // -------- Coin rain logic ----------
     const COIN_SRC = 'jogv-coin.png';
-    const stage = document.body;
+    const stage = document.getElementById('coinStage');
 
-    function spawnCoin(opts={}){
+    function spawnCoin(options){
+      const { delay=0, duration=4.6, size=undefined } = options || {};
       const img = new Image();
       img.src = COIN_SRC;
       img.className = 'coin';
-      const w = Math.random()*36 + 56;
-      img.style.width = w+'px';
-      img.style.height = 'auto';
 
-      const startX = Math.random()*window.innerWidth;
-      const drift = (Math.random()*160 - 80);
-      const dur = (opts.duration ?? (Math.random()*1.6 + 3.4));
-      const delay = (opts.delay) ?? Math.random()*0.8;
-      const r0 = Math.random()*60-30;
-      const r1 = r0 + (Math.random()*720-360);
+      const w = size ?? (Math.random()*36 + 56); // 56–92px
+      img.style.width = w+'px';
+
+      const startX = Math.random() * window.innerWidth;
+      const drift = (Math.random()*160 - 80); // horizontal drift
+      const r0 = Math.random()*60 - 30;
+      const r1 = r0 + (Math.random()*720 - 360);
 
       img.style.left = startX+'px';
-      img.style.setProperty('--r0', r0+'deg');
-      img.style.setProperty('--r1', r1+'deg');
-      img.style.setProperty('--x drift', drift+'px');
-      img.style.animationDuration = dur+'s';
-      img.style.animationDelay = delay+'s';
+      img.style.opacity = '0';
 
       stage.appendChild(img);
-      setTimeout(()=> img.remove(), (delay+dur)*1000 + 100);
+
+      // start animation (JS-driven for broad browser compatibility)
+      setTimeout(()=>{
+        img.style.transition = `transform ${duration}s linear, opacity .6s ease`;
+        img.style.transform = `translate(${drift}px, ${window.innerHeight + 180}px) rotate(${r1}deg)`;
+        img.style.opacity = '1';
+      }, 10 + delay*1000);
+
+      // cleanup
+      setTimeout(()=> img.remove(), (delay + duration + 0.8) * 1000);
     }
 
-    function burst(n=12){ for(let i=0;i<n;i++) spawnCoin({delay:Math.random()*0.6}); }
-    function gentleRain(n=14){ for(let i=0;i<n;i++) spawnCoin({delay:Math.random()*1.2, duration: 4 + Math.random()*2}); }
+    function burst(count=18){
+      for(let i=0;i<count;i++){
+        spawnCoin({ delay: Math.random()*0.9, duration: 3.8 + Math.random()*1.6 });
+      }
+    }
 
-    window.addEventListener('load', ()=> gentleRain(16));
-    document.getElementById('buyBtn')?.addEventListener('click', ()=> burst(16));
-    document.getElementById('stickyCoin')?.addEventListener('click', ()=> burst(14));
+    function drizzle(count=16){
+      for(let i=0;i<count;i++){
+        spawnCoin({ delay: Math.random()*1.2, duration: 4.2 + Math.random()*1.8 });
+      }
+    }
+
+    // On page load: gentle drizzle
+    window.addEventListener('load', ()=> drizzle(18));
+
+    // Buy button: burst
+    document.getElementById('buyBtn')?.addEventListener('click', ()=> burst(20));
+
+    // Sticky coin: burst
+    document.getElementById('stickyCoin')?.addEventListener('click', ()=> burst(16));
   </script>
 </body>
 </html>
