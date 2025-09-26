@@ -4,45 +4,32 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>JOGV • Journey of Good Vibes</title>
-  <meta name="description" content="JOGV is a community-powered meme coin spreading positivity. Built on Base.">
+  <meta name="description" content="JOGV is a community-powered meme coin spreading positivity. Built on Base." />
   <meta property="og:title" content="JOGV — Journey of Good Vibes" />
   <meta property="og:description" content="Community-powered meme coin spreading positivity. Built on Base." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://jogvtoken.com/jogv-coin.png" />
 
   <style>
     :root{
       --bg:#0b0d14; --card:#121521; --muted:#9aa3b2; --text:#f3f4f6;
       --purple:#9B5DE5; --teal:#00F5D4; --coral:#FF6B6B; --yellow:#FFD93D;
-      --glow:0 8px 24px rgba(0,0,0,.35);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
       font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-      color:var(--text);
-      background: var(--bg);
-      position:relative;
-      overflow-x:hidden;
-    }
-    /* backdrop gradient kept BEHIND everything */
-    .backdrop{
-      position:fixed; inset:-20% -10% -20% -10%;
-      z-index:-1; pointer-events:none;
       background:
         radial-gradient(1200px 800px at 10% -10%, rgba(155,93,229,.15), transparent 60%),
-        radial-gradient(900px 600px at 110% 0%, rgba(0,245,212,.12), transparent 60%);
-      filter:saturate(120%);
+        radial-gradient(900px 600px at 110% 0%, rgba(0,245,212,.12), transparent 60%),
+        var(--bg);
+      color:var(--text)
     }
-
     a{color:var(--teal)}
     .container{max-width:1120px;margin:0 auto;padding:24px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;text-decoration:none;border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--purple),var(--teal));color:#0b0d14;box-shadow:var(--glow); transition:transform .08s ease}
-    .btn:active{transform:translateY(1px)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;text-decoration:none;border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--purple),var(--teal),var(--yellow),var(--coral));color:#0b0d14;box-shadow:0 8px 24px rgba(0,0,0,.35)}
     .btn.alt{background:#161a2a;color:#e5e7eb;border:1px solid rgba(255,255,255,.1)}
     .btn.small{padding:8px 12px;border-radius:10px;font-weight:700}
-    .pill{display:inline-flex;align-items:center;gap:.5rem;border-radius:999px;padding:10px 14px;font-weight:800;background:linear-gradient(90deg,var(--purple),var(--teal)); color:#0b0d14; box-shadow:var(--glow)}
     .muted{color:var(--muted)}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
     .card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:24px}
@@ -56,6 +43,7 @@
     .nav .links{display:flex;gap:16px;flex-wrap:wrap;margin-left:auto}
     .nav a{color:#e5e7eb;text-decoration:none;font-weight:700;font-size:14.5px;opacity:.9}
     .logo-svg{width:120px;height:auto;vertical-align:middle}
+    .brand-text{font-size:22px;font-weight:900;color:#e5e7eb}
     .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
     @media (max-width:900px){.hero{grid-template-columns:1fr}}
     .title{font-size:clamp(28px,4.4vw,48px);line-height:1.05;margin:0 0 8px;font-weight:900}
@@ -70,45 +58,40 @@
     .faq dd{margin:6px 0 14px;color:var(--muted)}
     footer{opacity:.8;font-size:13px;text-align:center;padding:36px 0}
 
-    /* coin rain */
-    #coinStage{position:fixed;inset:0;pointer-events:none;z-index:15;overflow:hidden}
-    .coin{position:fixed;top:-80px;will-change:transform;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
-    @keyframes fall {
-      0%{transform:translate3d(var(--x,0px),-80px,0) rotate(var(--r0,0deg)) scale(var(--s,1))}
-      100%{transform:translate3d(calc(var(--x,0px) + var(--dx,0px)), 110vh,0) rotate(var(--r1,360deg)) scale(var(--s,1))}
+    /* Falling coins */
+    .coin{
+      position:fixed; top:-80px; z-index:5; pointer-events:none;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,.4));
+      animation: fall linear forwards;
     }
-    @keyframes spin {
-      0%{transform:rotateY(0deg)}
-      100%{transform:rotateY(360deg)}
+    @keyframes fall{
+      from { transform: translateY(0) rotate(var(--r0)); }
+      to   { transform: translateY(calc(100vh + 140px)) translateX(var(--x drift)) rotate(var(--r1)); }
     }
 
-    /* bottom-left floating coin (clickable) */
-    .lucky{
-      position:fixed; left:18px; bottom:20px; z-index:18; border:0; background:none; padding:0; cursor:pointer;
-      width:min(88px,22vw); height:min(88px,22vw);
-      display:grid; place-items:center;
-      filter:drop-shadow(0 8px 14px rgba(0,0,0,.6));
-      transition:transform .12s ease;
+    /* Bottom-left sticky coin */
+    .sticky-coin{
+      position:fixed; left:16px; bottom:16px; z-index:15; width:84px; height:84px; cursor:pointer;
+      filter: drop-shadow(0 10px 22px rgba(0,0,0,.45));
     }
-    .lucky img{width:100%; height:auto; display:block}
-    .lucky:active{transform:scale(.98)}
+    @media (max-width:600px){ .sticky-coin{ width:74px; height:74px; } }
+
   </style>
 </head>
 
 <body>
-  <div class="backdrop" aria-hidden="true"></div>
-
   <!-- NAVBAR -->
   <nav class="nav">
     <div class="container nav-inner">
       <a href="#hero" class="brand" style="display:flex;align-items:center;gap:12px;text-decoration:none">
         <svg class="logo-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
+            <!-- REVERSED gradient: purple -> teal -> yellow -> coral -->
             <linearGradient id="jogvGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#FF6B6B"/>
-              <stop offset="33%" stop-color="#FFD93D"/>
-              <stop offset="66%" stop-color="#00F5D4"/>
-              <stop offset="100%" stop-color="#9B5DE5"/>
+              <stop offset="0%" stop-color="#9B5DE5"/>
+              <stop offset="33%" stop-color="#00F5D4"/>
+              <stop offset="66%" stop-color="#FFD93D"/>
+              <stop offset="100%" stop-color="#FF6B6B"/>
             </linearGradient>
           </defs>
           <text x="0" y="115" font-size="100" font-family="Arial Black, sans-serif" fill="url(#jogvGradient)">JOGV</text>
@@ -124,16 +107,7 @@
     </div>
   </nav>
 
-  <!-- COIN RAIN STAGE -->
-  <div id="coinStage" aria-hidden="true"></div>
-
-  <!-- CLICKABLE LUCKY COIN -->
-  <button class="lucky" id="luckyBtn" aria-label="Make it rain">
-    <img src="jogv-coin.png" alt="JOGV gold coin">
-  </button>
-
   <main class="container">
-
     <!-- HERO -->
     <section class="card section" id="hero">
       <div class="hero">
@@ -143,12 +117,12 @@
           <div class="badges">
             <span class="badge"><span class="dot"></span>BASE Network</span>
             <span class="badge">Ticker: <strong>JOGV</strong></span>
-            <span class="badge">Max Supply: <span class="mono">999,999,999.99 JOGV</span></span>
+            <span class="badge">Max Supply: <span class="mono">1,000,000,000,000</span></span>
           </div>
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px">
-            <a class="btn" id="buyBtn" href="https://baseswap.fi/#/swap?outputCurrency=0xc54314718E317Cba6299aAf3F08c6CD6B41463AF" rel="noopener">Buy JOGV</a>
-            <a class="btn alt" id="chartBtn" href="#" rel="noopener">View Chart</a>
-            <a class="btn alt scroll" href="#community">Join Community</a>
+            <a class="btn" id="buyBtn" href="https://baseswap.fi/#/swap?inputCurrency=0xc54314718E317Cba6299aAf3F08c6CD6B41463AF" target="_blank" rel="noopener">Buy JOGV</a>
+            <a class="btn" id="chartBtn" href="https://www.geckoterminal.com/base/pools/0x45d1cf70afe13787b987bbf56b9b58d72ca99f8f?utm_source=coingecko&utm_medium=referral&utm_campaign=searchresults" target="_blank" rel="noopener">View Chart</a>
+            <a class="btn scroll" href="#community">Join Community</a>
           </div>
           <div style="height:12px"></div>
           <div class="copy">
@@ -156,7 +130,7 @@
               <div class="muted" style="font-size:12px;letter-spacing:.06em;text-transform:uppercase">Contract Address</div>
               <div class="mono" id="addr" style="font-size:14.5px">0xc54314718E317Cba6299aAf3F08c6CD6B41463AF</div>
             </div>
-            <button class="btn small" id="copyBtn" type="button">Copy</button>
+            <button class="btn small" id="copyBtn">Copy</button>
           </div>
         </div>
 
@@ -178,24 +152,24 @@
         <div class="card">
           <h2>Tokenomics (V1)</h2>
           <ul class="muted">
-            <li>Total Supply: <span class="mono">999,999,999.99 JOGV</span></li>
-            <li>Tax: <span class="mono">2% dev wallet</span></li>
-            <li>Liquidity: LP created (see docs)</li>
+            <li>Total Supply: <span class="mono">1,000,000,000,000 JOGV</span></li>
+            <li>Tax: <span class="mono">2% dev / treasury</span></li>
             <li>Future: staking & rewards hooks</li>
           </ul>
-          <p class="muted" style="margin-top:10px">
-            🔒 Transparency: <a href="https://github.com/JOGV50/jogv-token/blob/main/JOGV_Liquidity_Treasury_Transparency.docx">Liquidity & Treasury doc</a>
+          <p class="muted" style="margin-top:8px">
+            🔒 Transparency: <a href="https://github.com/JOGV50/jogv-token/raw/d89ce7931f794d5123286abc4898bdcf3adb9aad/JOGV_Liquidity_Treasury_Transparency.docx" target="_blank" rel="noopener">Liquidity & Treasury Transparency (doc)</a>
           </p>
         </div>
         <div class="card">
           <h2>Links</h2>
           <ul class="muted">
-            <li><a href="https://basescan.org/token/0xc54314718E317Cba6299aAf3F08c6CD6B41463AF">View on BaseScan</a></li>
-            <li><a href="https://baseswap.fi/#/swap?outputCurrency=0xc54314718E317Cba6299aAf3F08c6CD6B41463AF">Trade on BaseSwap</a></li>
-            <li><a href="#" aria-disabled="true">Litepaper (coming soon)</a></li>
+            <li><a href="https://basescan.org/token/0xc54314718E317Cba6299aAf3F08c6CD6B41463AF" target="_blank" rel="noopener">View on BaseScan</a></li>
+            <li><a href="https://baseswap.fi/#/swap?inputCurrency=0xc54314718E317Cba6299aAf3F08c6CD6B41463AF" target="_blank" rel="noopener">Trade on BaseSwap</a></li>
+            <li><a href="https://www.geckoterminal.com/base/pools/0x45d1cf70afe13787b987bbf56b9b58d72ca99f8f?utm_source=coingecko&utm_medium=referral&utm_campaign=searchresults" target="_blank" rel="noopener">Chart on GeckoTerminal</a></li>
+            <li><a href="https://github.com/JOGV50/jogv-token/raw/d89ce7931f794d5123286abc4898bdcf3adb9aad/JOGV_Litepaper.pdf" target="_blank" rel="noopener">Litepaper (PDF)</a></li>
           </ul>
           <div style="margin-top:8px">
-            <a class="btn" href="https://baseswap.fi/#/swap?outputCurrency=0xc54314718E317Cba6299aAf3F08c6CD6B41463AF">Buy JOGV</a>
+            <a class="btn" href="https://baseswap.fi/#/swap?inputCurrency=0xc54314718E317Cba6299aAf3F08c6CD6B41463AF" target="_blank" rel="noopener">Buy JOGV</a>
           </div>
         </div>
       </div>
@@ -205,12 +179,38 @@
     <section class="card section" id="how">
       <h2>How to Buy on Base</h2>
       <ol class="muted" style="margin-left:18px">
-        <li>Install a wallet (e.g., Coinbase Wallet or MetaMask).</li>
-        <li>Bridge ETH to <strong>Base</strong> (use the official Base bridge).</li>
-        <li>Open the DEX link and confirm JOGV is selected (address auto-loaded).</li>
-        <li>Set slippage if needed, confirm swap, and you’re in ✨</li>
+        <li><strong>Set up a wallet:</strong> Install MetaMask (browser or mobile). Save your recovery phrase securely.</li>
+        <li><strong>Add Base network:</strong>  
+          Name: Base · RPC: https://mainnet.base.org/ · Chain ID: 8453 · Symbol: ETH · Explorer: https://basescan.org/</li>
+        <li><strong>Fund with ETH:</strong> Buy in MetaMask or transfer from an exchange to your wallet on Base.</li>
+        <li><strong>Swap for JOGV:</strong> Open BaseSwap (link below). If needed, paste the contract:<br>
+          <span class="mono">0xc54314718E317Cba6299aAf3F08c6CD6B41463AF</span></li>
+        <li><strong>Confirm:</strong> Approve & swap. Welcome to the Journey of Good Vibes ✨</li>
       </ol>
-      <div style="margin-top:10px"><a class="btn" href="https://baseswap.fi/#/swap?outputCurrency=0xc54314718E317Cba6299aAf3F08c6CD6B41463AF">Open DEX</a></div>
+      <div style="margin-top:10px">
+        <a class="btn" href="https://baseswap.fi/#/swap?inputCurrency=0xc54314718E317Cba6299aAf3F08c6CD6B41463AF" target="_blank" rel="noopener">Open DEX</a>
+      </div>
+    </section>
+
+    <!-- STORY -->
+    <section class="card section" id="story">
+      <h2>A Story That Defines Our Vibe</h2>
+      <p class="muted" style="margin:8px 0 0">
+        At Journey of Good Vibes™, we believe life isn’t about avoiding challenges — it’s about rising above them. One of the most uplifting stories captures this perfectly:
+      </p>
+      <h3 style="margin:12px 0 8px">The Donkey in the Well</h3>
+      <p class="muted">
+        A farmer’s donkey once fell into an old well. The animal cried piteously for hours as the farmer tried to figure out what to do. Finally, he decided the donkey was old, and the well needed to be covered up—so he invited his neighbors to help him bury the animal in the well and put it out of its misery.
+      </p>
+      <p class="muted">
+        They grabbed shovels and began to throw dirt into the well. At first, the donkey realized what was happening and cried horribly. Then, with each shovel of dirt, something surprising happened: the donkey shook it off and stepped upward.
+      </p>
+      <p class="muted">
+        As the dirt continued to fall, the donkey kept shaking it off and climbing higher — shake, step; shake, step. Finally, to everyone’s astonishment, the donkey stepped out of the well and walked away, stronger than before.
+      </p>
+      <p class="muted">
+        The lesson is simple: Life will throw dirt on you — setbacks, critics, challenges. Don’t let it bury you. Shake it off, step up, and rise higher. That’s the essence of Journey of Good Vibes™ — no matter what comes your way, you can turn it into growth, strength, and freedom.
+      </p>
     </section>
 
     <!-- ROADMAP -->
@@ -230,6 +230,10 @@
       <dl class="faq">
         <dt>What’s the purpose of JOGV?</dt>
         <dd>To spread good vibes through a fun, youth-friendly brand while building a transparent, community-first token.</dd>
+        <dt>What chain is JOGV on?</dt>
+        <dd>JOGV is live on Base (L2 on Ethereum). Add Base to MetaMask to trade it.</dd>
+        <dt>Is liquidity locked?</dt>
+        <dd>Yes — liquidity is locked for transparency and trust.</dd>
         <dt>Is this financial advice?</dt>
         <dd>No. JOGV is a community project — please DYOR.</dd>
         <dt>Where can I get updates?</dt>
@@ -242,12 +246,12 @@
       <h2>Join the Community</h2>
       <p class="muted">We’re building a friendly space where positivity wins. Come hang out, share memes, and help shape the future of JOGV.</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
-        <a class="pill" href="https://t.me/jogv50">Telegram</a>
-        <a class="pill" href="https://discord.gg/vsTSyX5Z">Discord</a>
-        <a class="pill" href="https://x.com/jogv50">X / Twitter</a>
-        <a class="pill" href="https://github.com/JOGV50">GitHub</a>
-        <a class="pill" href="https://reddit.com/u/jogv50">Reddit</a>
-        <a class="pill" href="https://www.facebook.com/share/1Cy5SQjfeU/">Facebook</a>
+        <a class="btn" href="https://t.me/jogv50" target="_blank" rel="noopener">Telegram</a>
+        <a class="btn" href="https://discord.gg/vsTSyX5Z" target="_blank" rel="noopener">Discord</a>
+        <a class="btn" href="https://x.com/jogv50" target="_blank" rel="noopener">X / Twitter</a>
+        <a class="btn" href="https://github.com/JOGV50" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://reddit.com/u/jogv50" target="_blank" rel="noopener">Reddit</a>
+        <a class="btn" href="https://www.facebook.com/share/1Cy5SQjfeU/" target="_blank" rel="noopener">Facebook</a>
       </div>
     </section>
 
@@ -256,15 +260,15 @@
     </footer>
   </main>
 
+  <!-- sticky coin -->
+  <img src="./jogv-coin.png" alt="JOGV coin" id="stickyCoin" class="sticky-coin" />
+
   <script>
-    // Smooth scroll for in-page anchors (only when href starts with #)
-    document.querySelectorAll('.scroll[href^="#"]').forEach(a=>{
+    // Smooth scroll for internal anchors
+    document.querySelectorAll('a.scroll[href^="#"]').forEach(a=>{
       a.addEventListener('click',e=>{
         const id=a.getAttribute('href');
-        if(id && id.length>1){
-          e.preventDefault();
-          document.querySelector(id)?.scrollIntoView({behavior:'smooth'});
-        }
+        if(id.length>1){e.preventDefault(); document.querySelector(id)?.scrollIntoView({behavior:'smooth'});}
       });
     });
 
@@ -278,69 +282,45 @@
       }catch(e){ btn.textContent='Copy failed'; }
     });
 
-    // Coin rain
-    const COIN_SRC = 'jogv-coin.png';   // PNG in repo root
-    const stage = document.getElementById('coinStage');
+    // --- Falling coins ---
+    const COIN_SRC = 'jogv-coin.png'; // file at repo root
+    const stage = document.body;
 
     function spawnCoin(opts={}){
       const img = new Image();
       img.src = COIN_SRC;
       img.className = 'coin';
-      const w = Math.random()*44 + 48; // 48–92px
+      const w = Math.random()*36 + 56; // 56-92px
       img.style.width = w+'px';
+      img.style.height = 'auto';
 
       const startX = Math.random()*window.innerWidth;
       const drift = (Math.random()*160 - 80); // left/right drift
-      const dur = (opts.duration ?? (Math.random()*1.8 + 3.8)); // ~3.8–5.6s
-      const delay = (opts.delay) ?? 0;
-      const scale = Math.random()*0.2 + 0.9;
+      const dur = (opts.duration ?? (Math.random()*1.6 + 3.4)); // ~3.4-5s
+      const delay = (opts.delay) ?? Math.random()*0.8;
+      const r0 = Math.random()*60-30;
+      const r1 = r0 + (Math.random()*720-360);
 
-      // CSS custom properties to simplify keyframes
-      img.style.setProperty('--x', startX+'px');
-      img.style.setProperty('--dx', drift+'px');
-      img.style.setProperty('--s', scale);
-      img.style.setProperty('--r0', (Math.random()*30-15)+'deg');
-      img.style.setProperty('--r1', (Math.random()*540+360)+'deg');
-
-      img.style.animation = `fall ${dur}s linear ${delay}s forwards`;
+      img.style.left = startX+'px';
+      img.style.setProperty('--r0', r0+'deg');
+      img.style.setProperty('--r1', r1+'deg');
+      img.style.setProperty('--x drift', drift+'px');
+      img.style.animationDuration = dur+'s';
+      img.style.animationDelay = delay+'s';
 
       stage.appendChild(img);
-      setTimeout(()=> img.remove(), (delay+dur)*1000 + 400);
+      setTimeout(()=> img.remove(), (delay+dur)*1000 + 100);
     }
 
-    function rainBurst(count=24, opts={}){
-      for(let i=0;i<count;i++){
-        spawnCoin({
-          delay: (Math.random()*0.9),
-          duration: (Math.random()*1.8 + 3.8),
-          ...opts
-        });
-      }
-    }
+    function burst(n=12){ for(let i=0;i<n;i++) spawnCoin({delay:Math.random()*0.6}); }
+    function gentleRain(n=14){ for(let i=0;i<n;i++) spawnCoin({delay:Math.random()*1.2, duration: 4 + Math.random()*2}); }
 
-    // On page load (gentle drizzle)
-    document.addEventListener('DOMContentLoaded', ()=>{
-      rainBurst(16);
-    });
+    // On load: gentle rain
+    window.addEventListener('load', ()=> gentleRain(16));
 
-    // Buy button -> coin burst + navigate (same tab)
-    const buyBtn = document.getElementById('buyBtn');
-    buyBtn?.addEventListener('click',(e)=>{
-      // Let normal navigation happen; start a quick burst for feedback
-      rainBurst(18);
-      // no preventDefault, so tap opens smoothly
-    });
-
-    // Bottom-left coin -> fun burst only
-    document.getElementById('luckyBtn')?.addEventListener('click', ()=>{
-      rainBurst(28);
-    });
-
-    // Chart button (placeholder)
-    document.getElementById('chartBtn')?.addEventListener('click',(e)=>{
-      e.preventDefault();
-      alert('Chart link coming soon!');
-    });
+    // Buy button & sticky coin trigger bursts
+    document.getElementById('buyBtn')?.addEventListener('click', ()=> burst(16));
+    document.getElementById('stickyCoin')?.addEventListener('click', ()=> burst(14));
   </script>
 </body>
 </html>
